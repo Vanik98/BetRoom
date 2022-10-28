@@ -127,7 +127,6 @@ class MovieActivity : AppCompatActivity() {
                 (actor.movieIds as ArrayList<Int>).add(movie.id)
                 movieViewModel.insertMovie(actor, movie)
                 (adapter.movies as ArrayList<Movie>).add(movie)
-                adapter.notifyItemChanged(0)
                 val movieIdsJson = Json.encodeToString(actor.movieIds)
                 movieIdsTextView.text = movieIdsJson
             }

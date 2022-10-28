@@ -140,8 +140,6 @@ class MainActivity : AppCompatActivity() {
             val actor = createActorFromViews()
             if (actor != null) {
                 mainViewModel.insertActor(actor)
-                mainViewModel.actors.add(0, actor)
-                actorAdapter.notifyItemChanged(0)
             }
         }
     }
@@ -151,6 +149,7 @@ class MainActivity : AppCompatActivity() {
         dialog.show()
         mainViewModel.getAllRoomActors().observe(this) {
             mainViewModel.actors.clear()
+            mainViewModel.actorsRoom.clear()
             for (i in it.indices) {
                 mainViewModel.actors.add(it[it.size - 1 - i])
             }
@@ -165,6 +164,7 @@ class MainActivity : AppCompatActivity() {
         dialog.show()
         mainViewModel.getAllLiteActors().observe(this) {
             mainViewModel.actors.clear()
+            mainViewModel.actorsLite.clear()
             for (i in it.indices) {
                 mainViewModel.actors.add(it[it.size - 1 - i])
             }
