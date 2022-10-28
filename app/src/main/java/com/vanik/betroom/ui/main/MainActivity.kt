@@ -86,14 +86,14 @@ class MainActivity : AppCompatActivity() {
             val pet1 = Pet(0, petName, petAge.toInt(), petCheckBox.isChecked)
             pets = arrayListOf()
             pets.add(pet1)
-            if ((petName2.isNotEmpty() && petAge.isEmpty()) || (petName2.isEmpty() && petAge.isNotEmpty())) {
-                showToast("fill all fields")
-            } else if (petName2.isNotEmpty() || petAge2.isNotEmpty()) {
+            if ((petName2.isNotEmpty()  && petAge2.isNotEmpty())) {
                 val pet2 = Pet(0, petName2, petAge2.toInt(), petCheckBox2.isChecked)
                 pets.add(pet2)
+            } else {
+                showToast("pet2 is not added")
             }
-        } else if (petName.isNotEmpty() || petAge.isNotEmpty()) {
-            showToast("fill all fields")
+        } else  {
+            showToast("pet1 is not added")
         }
         return pets
     }
