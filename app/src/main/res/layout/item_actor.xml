@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@color/teal_200"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="3dp"
+    android:paddingBottom="2dp"
+    >
+<LinearLayout
+    android:padding="15dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    >
+    <TextView
+        android:id="@+id/actorItemNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="30dp"
+        android:textSize="15sp"
+        android:text="name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <Space
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent" />
+    <TextView
+        android:id="@+id/actorItemSurnameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="surname"
+        android:textSize="15sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <Space
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent" />
+    <TextView
+        android:id="@+id/actorItemAgeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="age"
+        android:textSize="15sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</LinearLayout>
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/actorItemPetLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/purple_200"
+        android:visibility="gone"
+        >
+        <TextView
+            android:id="@+id/actorItemPetNameTextView1"
+            android:layout_width="100dp"
+            android:gravity="center"
+            android:textSize="15sp"
+            android:text="petName"
+            android:layout_margin="10dp"
+            android:layout_height="wrap_content"
+            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            />
+        <TextView
+            android:id="@+id/actorItemPetAgeTextView1"
+            android:layout_width="50dp"
+            android:gravity="center"
+            android:textSize="15sp"
+            android:layout_margin="10dp"
+            android:layout_height="wrap_content"
+            />
+        <TextView
+            android:id="@+id/actorItemPetIsSmartTextView1"
+            android:layout_width="150dp"
+            android:gravity="center"
+            android:textSize="15sp"
+            android:layout_margin="10dp"
+            android:layout_height="wrap_content"
+            />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/actorItemPetLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/purple_200"
+        android:visibility="gone"
+        >
+        <TextView
+            android:id="@+id/actorItemPetNameTextView2"
+            android:layout_width="100dp"
+            android:gravity="center"
+            android:text="petName2"
+            android:textSize="15sp"
+            android:layout_margin="10dp"
+            android:layout_height="wrap_content"
+           />
+        <TextView
+            android:id="@+id/actorItemPetAgeTextView2"
+            android:layout_width="50dp"
+            android:gravity="center"
+            android:textSize="15sp"
+            android:layout_margin="10dp"
+            android:layout_height="wrap_content"
+           />
+        <TextView
+            android:id="@+id/actorItemPetIsSmartTextView2"
+            android:layout_width="150dp"
+            android:gravity="center"
+            android:textSize="15sp"
+            android:layout_margin="10dp"
+            android:layout_height="wrap_content"
+            />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.appcompat.widget.LinearLayoutCompat>
