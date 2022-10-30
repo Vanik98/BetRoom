@@ -86,6 +86,7 @@ class MovieActivity : AppCompatActivity() {
         return movie
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun addMovie() {
         binding.movieAddButton.setOnClickListener {
             val movie = createMovieFromViews()
@@ -95,9 +96,12 @@ class MovieActivity : AppCompatActivity() {
                 }
                 (actor.movieIds as ArrayList<Int>).add(movie.id)
                 movieViewModel.insertMovie(actor, movie)
-                (adapter.movies as ArrayList<Movie>).add(movie)
+                (adapter.movies as ArrayList<Movie>).add(0,movie)
                 val movieIdsJson = Json.encodeToString(actor.movieIds)
                 binding.movieIdsInActorTextView.text = movieIdsJson
+                if(!movieViewModel.isRoom){
+                    adapter.notifyDataSetChanged()
+                }
             }
         }
     }
