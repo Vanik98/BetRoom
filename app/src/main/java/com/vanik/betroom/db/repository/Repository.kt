@@ -32,7 +32,7 @@ object Repository {
         }
     }
 
-    suspend fun insertActorWithRoom(actor: Actor) = withContext(Dispatchers.IO) {
+    suspend fun insertActorWithRoom(actor: Actor) {
         dbRoom.ActorDao().insert(actor)
     }
 
@@ -46,19 +46,19 @@ object Repository {
         dbLite.insert("actor", null, cv)
     }
 
-    suspend fun insertMovieWithRoom(actor: Actor, movie: Movie): Actor {
+    suspend fun insertMovieWithRoom(actor: Actor, movie: Movie) = withContext(Dispatchers.IO) {
         dbRoom.MovieDao().insert(movie)
         dbRoom.ActorDao().update(actor)
-        return actor
     }
 
     suspend fun insertMovieWithSqlLite(actor: Actor, movie: Movie) = withContext(Dispatchers.IO) {
+        //movie insert
         var cv = ContentValues()
         cv.put("id", movie.id)
         cv.put("name", movie.name)
         cv.put("imdbRate", movie.imdbRate)
         dbLite.insert("movie", null, cv)
-        //actor
+        //actor update
         cv = ContentValues()
         cv.put("name", actor.name)
         cv.put("surname", actor.surname)
@@ -121,7 +121,5 @@ object Repository {
         }
         mutableLiveData.value = movies
         return mutableLiveData
-
     }
-
 }

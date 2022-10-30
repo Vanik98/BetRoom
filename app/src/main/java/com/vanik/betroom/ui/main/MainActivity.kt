@@ -9,10 +9,12 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.vanik.betroom.R
+import com.vanik.betroom.databinding.ActivityMainBinding
 import com.vanik.betroom.entity.Actor
 import com.vanik.betroom.entity.Pet
 import com.vanik.betroom.ui.movie.MovieActivity
@@ -21,108 +23,52 @@ import kotlinx.serialization.json.Json
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var nameEditText: EditText
-    private lateinit var surnameEditText: EditText
-    private lateinit var ageEditText: EditText
-    private lateinit var actorButton: Button
-    private lateinit var roomButton: Button
-    private lateinit var sqlLiteButton: Button
-    private lateinit var petNameEditText: EditText
-    private lateinit var petAgeEditText: EditText
-    private lateinit var petCheckBox: CheckBox
-    private lateinit var petNameEditText2: EditText
-    private lateinit var petAgeEditText2: EditText
-    private lateinit var petCheckBox2: CheckBox
+    private lateinit var binding: ActivityMainBinding
     private lateinit var actorAdapter: ActorAdapter
     private lateinit var dialog: Dialog
 
     private lateinit var mainViewModel: MainViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
         mainViewModel.connectRepository(applicationContext)
         initViews()
         showDbActors()
         chooseRoomOrLite()
         addActor()
-        initialiseAdapter()
     }
 
-    private fun initViews() {
-        nameEditText = findViewById(R.id.mainNameEditText)
-        surnameEditText = findViewById(R.id.mainSurnameEditText)
-        actorButton = findViewById(R.id.mainAddActorButton)
-        ageEditText = findViewById(R.id.mainAgeEditText)
-        roomButton = findViewById(R.id.mainRoomButton)
-        sqlLiteButton = findViewById(R.id.mainSqlLiteButton)
-        petNameEditText = findViewById(R.id.mainPetNameEditText)
-        petAgeEditText = findViewById(R.id.mainPetAgeEditText)
-        petCheckBox = findViewById(R.id.mainPetCheckBox)
-        petNameEditText2 = findViewById(R.id.mainPetNameEditText2)
-        petAgeEditText2 = findViewById(R.id.mainPetAgeEditText2)
-        petCheckBox2 = findViewById(R.id.mainPetCheckBox2)
+    private fun initViews(){
+        initDialog()
+        initAdapter()
+    }
+
+    private fun initDialog(){
         dialog = Dialog(this, android.R.style.Theme_DeviceDefault_Light_NoActionBar_Fullscreen)
         dialog.setContentView(R.layout.dialog_layout)
-        initialiseAdapter()
     }
 
-    private fun initialiseAdapter() {
+    private fun initAdapter() {
         val actorRecyclerView: RecyclerView = findViewById(R.id.mainActorRecyclerView)
         actorRecyclerView.layoutManager = LinearLayoutManager(this)
-        actorRecyclerView.adapter = ActorAdapter(mainViewModel.actors) {
-            openMovieActivity(it)
-        }
+        actorRecyclerView.adapter = ActorAdapter(mainViewModel.actors) { openMovieActivity(it) }
         actorAdapter = actorRecyclerView.adapter as ActorAdapter
-    }
-
-    private fun createPetsFromViews(): List<Pet>? {
-        var pets: List<Pet>? = null
-        val petName = petNameEditText.text.toString()
-        val petAge = petAgeEditText.text.toString()
-        val petName2 = petNameEditText2.text.toString()
-        val petAge2 = petAgeEditText2.text.toString()
-        if (petName.isNotEmpty() && petAge.isNotEmpty()) {
-            val pet1 = Pet(0, petName, petAge.toInt(), petCheckBox.isChecked)
-            pets = arrayListOf()
-            pets.add(pet1)
-            if ((petName2.isNotEmpty()  && petAge2.isNotEmpty())) {
-                val pet2 = Pet(0, petName2, petAge2.toInt(), petCheckBox2.isChecked)
-                pets.add(pet2)
-            } else {
-                showToast("pet2 is not added")
-            }
-        } else  {
-            showToast("pet1 is not added")
-        }
-        return pets
-    }
-
-    private fun createActorFromViews(): Actor? {
-        val name = nameEditText.text.toString()
-        val surname = surnameEditText.text.toString()
-        val age = ageEditText.text.toString()
-        return if (name.isNotEmpty() && surname.isNotEmpty() && age.isNotEmpty()) {
-            Actor(name, surname, age.toInt(), createPetsFromViews(), arrayListOf())
-        } else {
-            showToast("fill all fields")
-            null
-        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
     private fun chooseRoomOrLite() {
-        roomButton.setOnClickListener {
-            sqlLiteButton.isEnabled = true
-            roomButton.isEnabled = false
+        binding.mainRoomButton.setOnClickListener {
+            binding.mainSqlLiteButton.isEnabled = true
+            binding.mainRoomButton.isEnabled = false
             mainViewModel.isRoom = true
             mainViewModel.actors.clear()
             mainViewModel.actors.addAll(mainViewModel.actorsRoom)
             actorAdapter.notifyDataSetChanged()
         }
-        sqlLiteButton.setOnClickListener {
-            roomButton.isEnabled = true
-            sqlLiteButton.isEnabled = false
+        binding.mainSqlLiteButton.setOnClickListener {
+            binding.mainRoomButton.isEnabled = true
+            binding.mainSqlLiteButton.isEnabled = false
             mainViewModel.isRoom = false
             mainViewModel.actors.clear()
             mainViewModel.actors.addAll(mainViewModel.actorsLite)
@@ -134,13 +80,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    private fun addActor() {
-        actorButton.setOnClickListener {
-            val actor = createActorFromViews()
-            if (actor != null) {
-                mainViewModel.insertActor(actor)
-            }
+    private fun showDbActors() {
+        when (mainViewModel.isRoom) {
+            true -> showRoomActors()
+            false -> showLiteActors()
         }
     }
 
@@ -149,10 +92,10 @@ class MainActivity : AppCompatActivity() {
         dialog.show()
         mainViewModel.getAllRoomActors().observe(this) {
             mainViewModel.actors.clear()
-            mainViewModel.actorsRoom.clear()
             for (i in it.indices) {
                 mainViewModel.actors.add(it[it.size - 1 - i])
             }
+            mainViewModel.actorsRoom.clear()
             mainViewModel.actorsRoom.addAll(mainViewModel.actors)
             actorAdapter.notifyDataSetChanged()
             dialog.dismiss()
@@ -164,22 +107,64 @@ class MainActivity : AppCompatActivity() {
         dialog.show()
         mainViewModel.getAllLiteActors().observe(this) {
             mainViewModel.actors.clear()
-            mainViewModel.actorsLite.clear()
             for (i in it.indices) {
                 mainViewModel.actors.add(it[it.size - 1 - i])
             }
+            mainViewModel.actorsLite.clear()
             mainViewModel.actorsLite.addAll(mainViewModel.actors)
             actorAdapter.notifyDataSetChanged()
             dialog.dismiss()
         }
     }
 
-    private fun showDbActors() {
-        when (mainViewModel.isRoom) {
-            true -> showRoomActors()
-            false -> showLiteActors()
+    @SuppressLint("NotifyDataSetChanged")
+    private fun addActor() {
+        binding.mainAddActorButton.setOnClickListener {
+            val actor = createActorFromViews()
+            if (actor != null) {
+                mainViewModel.insertActor(actor)
+                if(!mainViewModel.isRoom){
+                    mainViewModel.actors.add(0,actor)
+                    actorAdapter.notifyItemChanged(0)
+                }
+            }
         }
     }
+
+    private fun createActorFromViews(): Actor? {
+        val name = binding.mainNameEditText.text.toString()
+        val surname = binding.mainSurnameEditText.text.toString()
+        val age = binding.mainAgeEditText.text.toString()
+        return if (name.isNotEmpty() && surname.isNotEmpty() && age.isNotEmpty()) {
+            Actor(name, surname, age.toInt(), createPetsFromViews(), arrayListOf())
+        } else {
+            showToast("fill all fields")
+            null
+        }
+    }
+
+    private fun createPetsFromViews(): List<Pet>? {
+        var pets: List<Pet>? = null
+        val petName = binding.mainPetNameEditText.text.toString()
+        val petAge = binding.mainPetAgeEditText.text.toString()
+        val petName2 = binding.mainPetNameEditText2.text.toString()
+        val petAge2 = binding.mainPetAgeEditText2.text.toString()
+        if (petName.isNotEmpty() && petAge.isNotEmpty()) {
+            val pet1 = Pet(0, petName, petAge.toInt(), binding.mainPetCheckBox.isChecked)
+            pets = arrayListOf()
+            pets.add(pet1)
+            if ((petName2.isNotEmpty() && petAge2.isNotEmpty())) {
+                val pet2 = Pet(0, petName2, petAge2.toInt(), binding.mainPetCheckBox2.isChecked)
+                pets.add(pet2)
+            } else {
+                showToast("actor is added but pet2 is not added")
+            }
+        } else {
+            showToast("actor is added butpet1 is not added")
+        }
+        return pets
+    }
+
 
     @SuppressLint("SuspiciousIndentation")
     private fun openMovieActivity(actor: Actor) {

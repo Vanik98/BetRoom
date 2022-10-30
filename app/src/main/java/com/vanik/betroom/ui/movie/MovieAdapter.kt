@@ -6,32 +6,27 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.vanik.betroom.R
+import com.vanik.betroom.databinding.ItemMovieBinding
 import com.vanik.betroom.entity.Movie
 
 class MovieAdapter(var movies: List<Movie>) : RecyclerView.Adapter<MovieAdapter.MovieHolder>() {
 
+    private lateinit var binding: ItemMovieBinding
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieHolder {
-        return MovieHolder(
-            LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_movie, parent, false)
-        )
+        binding = ItemMovieBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent, false)
+        return MovieHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: MovieHolder, position: Int) {
-        holder.bind(movies[position])
-    }
+    override fun onBindViewHolder(holder: MovieHolder, position: Int) = holder.bind(movies[position])
 
     override fun getItemCount() = movies.size
 
-    inner class MovieHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val id: TextView = itemView.findViewById(R.id.movieItemIdTextView)
-        private val name: TextView = itemView.findViewById(R.id.movieItemNameTextView)
-        private val imdbRate: TextView = itemView.findViewById(R.id.movieItemImdbRateTextView)
+    inner class MovieHolder(private val binding: ItemMovieBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(movie: Movie) {
-            id.text = movie.id.toString()
-            name.text = movie.name
-            imdbRate.text = movie.imdbRate.toString()
+            binding.movie = movie
         }
     }
-
 }

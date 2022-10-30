@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="actor"
+            type="com.vanik.betroom.entity.Actor" />
+    </data>
+<androidx.appcompat.widget.LinearLayoutCompat
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:gravity="center"
@@ -20,9 +26,9 @@
         android:id="@+id/actorItemNameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="30dp"
+        android:layout_marginEnd="30dp"
         android:textSize="15sp"
-        android:text="name"
+        android:text="@{actor.name}"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
     <Space
@@ -33,7 +39,7 @@
         android:id="@+id/actorItemSurnameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="surname"
+        android:text="@{actor.surname}"
         android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -45,7 +51,7 @@
         android:id="@+id/actorItemAgeTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="age"
+        android:text="@{Integer.toString(actor.age)}"
         android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -63,7 +69,6 @@
             android:layout_width="100dp"
             android:gravity="center"
             android:textSize="15sp"
-            android:text="petName"
             android:layout_margin="10dp"
             android:layout_height="wrap_content"
             android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -99,8 +104,7 @@
             android:id="@+id/actorItemPetNameTextView2"
             android:layout_width="100dp"
             android:gravity="center"
-            android:text="petName2"
-            android:textSize="15sp"
+           android:textSize="15sp"
             android:layout_margin="10dp"
             android:layout_height="wrap_content"
            />
@@ -108,7 +112,7 @@
             android:id="@+id/actorItemPetAgeTextView2"
             android:layout_width="50dp"
             android:gravity="center"
-            android:textSize="15sp"
+           android:textSize="15sp"
             android:layout_margin="10dp"
             android:layout_height="wrap_content"
            />
@@ -122,3 +126,4 @@
             />
     </androidx.appcompat.widget.LinearLayoutCompat>
 </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>
