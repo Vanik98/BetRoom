@@ -58,7 +58,7 @@ class MovieActivity : AppCompatActivity() {
         binding.movieIdsInActorTextView.text = movieIdsJson
     }
 
-    private fun badCodeSetPetsViews(){
+    private fun badCodeSetPetsViews() {
         if (actor.pets != null) {
             binding.moviePetLayout1.visibility = View.VISIBLE
             binding.moviePetNameTextView1.text = actor.pets!![0]!!.name
@@ -96,12 +96,10 @@ class MovieActivity : AppCompatActivity() {
                 }
                 (actor.movieIds as ArrayList<Int>).add(movie.id)
                 movieViewModel.insertMovie(actor, movie)
-                (adapter.movies as ArrayList<Movie>).add(0,movie)
+                (adapter.movies as ArrayList<Movie>).add(0, movie)
                 val movieIdsJson = Json.encodeToString(actor.movieIds)
                 binding.movieIdsInActorTextView.text = movieIdsJson
-                if(!movieViewModel.isRoom){
-                    adapter.notifyDataSetChanged()
-                }
+                adapter.notifyDataSetChanged()
             }
         }
     }
