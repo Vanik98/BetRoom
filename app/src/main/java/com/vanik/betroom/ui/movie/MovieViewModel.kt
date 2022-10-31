@@ -1,11 +1,12 @@
 package com.vanik.betroom.ui.movie
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.vanik.betroom.db.repository.Repository
 import com.vanik.betroom.entity.Actor
 import com.vanik.betroom.entity.Movie
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MovieViewModel : ViewModel() {
@@ -22,11 +23,11 @@ class MovieViewModel : ViewModel() {
         }
     }
 
-    fun getMovies(): LiveData<List<Movie>> {
-        return if (isRoom) {
-            Repository.getMoviesWithRoom()
-        } else {
-            Repository.getMoviesSqlLIte()
+
+    fun getMovies() = liveData(Dispatchers.IO) {
+        when(isRoom) {
+            true->emit(Repository.getMoviesWithRoom())
+            else->emit(Repository.getMoviesSqlLIte())
         }
     }
 }

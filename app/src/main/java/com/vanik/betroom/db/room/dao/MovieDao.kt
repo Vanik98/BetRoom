@@ -10,7 +10,7 @@ import com.vanik.betroom.entity.Movie
 @Dao
 interface MovieDao {
     @Query("SELECT * FROM Movie")
-    fun getAllMovies(): LiveData<List<Movie>>
+    suspend fun getAllMovies(): List<Movie>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(movie: Movie)
