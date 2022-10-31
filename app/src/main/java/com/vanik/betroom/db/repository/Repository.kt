@@ -70,13 +70,12 @@ object Repository {
         dbLite.update("actor", cv, "name= ?", arrayOf(actor.name))
     }
 
-    fun getAllActorsWithRoom() = dbRoom.ActorDao().getAllActors()
+    suspend fun getAllActorsWithRoom() = dbRoom.ActorDao().getAllActors()
 
     @SuppressLint("Recycle")
-    fun getAllActorsSqlLite(): LiveData<List<Actor>> {
+   suspend fun getAllActorsSqlLite() : List<Actor> {
         val cursorCourses: Cursor = dbLite.rawQuery("SELECT * FROM Actor", null)
         val actors = arrayListOf<Actor>()
-        val mutableLiveData = MutableLiveData<List<Actor>>()
         if (cursorCourses.moveToFirst()) {
             do {
                 var pets: List<Pet?>? = arrayListOf()
@@ -99,16 +98,14 @@ object Repository {
                 actors.add(actor)
             } while (cursorCourses.moveToNext())
         }
-        mutableLiveData.value = actors
-        return mutableLiveData
+        return actors
     }
 
-    fun getMoviesWithRoom() = dbRoom.MovieDao().getAllMovies()
+    suspend fun getMoviesWithRoom() = dbRoom.MovieDao().getAllMovies()
 
-    fun getMoviesSqlLIte(): LiveData<List<Movie>> {
+   suspend fun getMoviesSqlLIte(): List<Movie> {
         val cursorCourses: Cursor = dbLite.rawQuery("SELECT * FROM Movie", null)
         val movies = arrayListOf<Movie>()
-        val mutableLiveData = MutableLiveData<List<Movie>>()
         if (cursorCourses.moveToFirst()) {
             do {
                 val movie = Movie(
@@ -119,7 +116,6 @@ object Repository {
                 movies.add(movie)
             } while (cursorCourses.moveToNext())
         }
-        mutableLiveData.value = movies
-        return mutableLiveData
+        return movies
     }
 }
