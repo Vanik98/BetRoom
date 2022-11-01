@@ -29,20 +29,10 @@ class ActorAdapter(
 
     inner class ActorHolder(private val binding: ItemActorBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        init {
-            binding.root.setOnClickListener { onClick.invoke(actors[adapterPosition]) }
-        }
-
         fun bind(actor: Actor) {
             binding.actor = actor
-            setOnClickListener(actor)
             badCodeSetPetsInViews(actor)
-        }
-
-        private fun setOnClickListener(actor: Actor) {
-            binding.root.setOnClickListener {
-                onClick.invoke(actor)
-            }
+            binding.root.setOnClickListener { onClick.invoke(actor) }
         }
 
         @SuppressLint("SetTextI18n")
