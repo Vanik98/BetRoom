@@ -8,6 +8,8 @@ import com.vanik.betroom.entity.Actor
 import com.vanik.betroom.db.repository.Repository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
@@ -30,7 +32,7 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    suspend fun getAllRoomActors() = Repository.getAllActorsWithRoom()
+    suspend fun getAllRoomActors() =  Repository.getAllActorsWithRoom()
 
     suspend fun getAllLiteActors() = Repository.getAllActorsSqlLite()
 
