@@ -10,7 +10,10 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.vanik.betroom.R
@@ -20,6 +23,7 @@ import com.vanik.betroom.db.repository.Repository
 import com.vanik.betroom.entity.Actor
 import com.vanik.betroom.entity.Movie
 import com.vanik.betroom.ui.main.ActorAdapter
+import kotlinx.coroutines.launch
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -107,12 +111,15 @@ class MovieActivity : AppCompatActivity() {
     @SuppressLint("NotifyDataSetChanged")
     private fun showDbMovies() {
         movieViewModel.isRoom = intent.getBooleanExtra("isRoom", true)
-        movieViewModel.getMovies().observe(this) {
-            movieViewModel.movies.clear()
-            for (i in it.indices) {
-                movieViewModel.movies.add(it[it.size - 1 - i])
+        lifecycleScope.launch {
+            movieViewModel.getMovies().flowWithLifecycle(lifecycle, Lifecycle.State.RESUMED)
+                .collect  {
+                movieViewModel.movies.clear()
+                for (i in it.indices) {
+                    movieViewModel.movies.add(it[it.size - 1 - i])
+                }
+                adapter.notifyDataSetChanged()
             }
-            adapter.notifyDataSetChanged()
         }
     }
 

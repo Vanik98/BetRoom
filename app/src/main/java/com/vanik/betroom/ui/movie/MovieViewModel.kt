@@ -24,10 +24,9 @@ class MovieViewModel : ViewModel() {
     }
 
 
-    fun getMovies() = liveData(Dispatchers.IO) {
-        when(isRoom) {
-            true->emit(Repository.getMoviesWithRoom())
-            else->emit(Repository.getMoviesSqlLIte())
+    suspend fun getMovies() = when(isRoom) {
+            true->Repository.getMoviesWithRoom()
+            else->Repository.getMoviesSqlLIte()
         }
-    }
+
 }

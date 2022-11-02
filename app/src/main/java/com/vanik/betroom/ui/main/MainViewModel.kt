@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.vanik.betroom.entity.Actor
 import com.vanik.betroom.db.repository.Repository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
@@ -29,7 +30,8 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    fun getAllRoomActors() = liveData(Dispatchers.IO) { emit(Repository.getAllActorsWithRoom()) }
+    suspend fun getAllRoomActors() = Repository.getAllActorsWithRoom()
 
-    fun getAllLiteActors() = liveData(Dispatchers.IO) { emit(Repository.getAllActorsSqlLite()) }
+    suspend fun getAllLiteActors() = Repository.getAllActorsSqlLite()
+
 }

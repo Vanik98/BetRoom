@@ -10,7 +10,10 @@ import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.vanik.betroom.R
@@ -18,6 +21,8 @@ import com.vanik.betroom.databinding.ActivityMainBinding
 import com.vanik.betroom.entity.Actor
 import com.vanik.betroom.entity.Pet
 import com.vanik.betroom.ui.movie.MovieActivity
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.util.*
@@ -39,12 +44,12 @@ class MainActivity : AppCompatActivity() {
         addActor()
     }
 
-    private fun initViews(){
+    private fun initViews() {
         initDialog()
         initAdapter()
     }
 
-    private fun initDialog(){
+    private fun initDialog() {
         dialog = Dialog(this, android.R.style.Theme_DeviceDefault_Light_NoActionBar_Fullscreen)
         dialog.setContentView(R.layout.dialog_layout)
     }
@@ -90,31 +95,38 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("NotifyDataSetChanged")
     private fun showRoomActors() {
         dialog.show()
-        mainViewModel.getAllRoomActors().observe(this) {
-            mainViewModel.actors.clear()
-            for (i in it.indices) {
-                mainViewModel.actors.add(it[it.size - 1 - i])
-            }
-            mainViewModel.actorsRoom.clear()
-            mainViewModel.actorsRoom.addAll(mainViewModel.actors)
-            actorAdapter.notifyDataSetChanged()
-            dialog.dismiss()
+        lifecycleScope.launch {
+            mainViewModel.getAllRoomActors().flowWithLifecycle(lifecycle, Lifecycle.State.RESUMED)
+                .collect {
+                    mainViewModel.actors.clear()
+                    for (i in it.indices) {
+                        mainViewModel.actors.add(it[it.size - 1 - i])
+                    }
+                    mainViewModel.actorsRoom.clear()
+                    mainViewModel.actorsRoom.addAll(mainViewModel.actors)
+                    actorAdapter.notifyDataSetChanged()
+                    dialog.dismiss()
+                }
         }
     }
 
     @SuppressLint("NotifyDataSetChanged")
     private fun showLiteActors() {
         dialog.show()
-        mainViewModel.getAllLiteActors().observe(this) {
-            mainViewModel.actors.clear()
-            for (i in it.indices) {
-                mainViewModel.actors.add(it[it.size - 1 - i])
-            }
-            mainViewModel.actorsLite.clear()
-            mainViewModel.actorsLite.addAll(mainViewModel.actors)
-            actorAdapter.notifyDataSetChanged()
-            dialog.dismiss()
+        lifecycleScope.launch {
+            mainViewModel.getAllLiteActors().flowWithLifecycle(lifecycle, Lifecycle.State.RESUMED)
+                .collect {
+                    mainViewModel.actors.clear()
+                    for (i in it.indices) {
+                        mainViewModel.actors.add(it[it.size - 1 - i])
+                    }
+                    mainViewModel.actorsLite.clear()
+                    mainViewModel.actorsLite.addAll(mainViewModel.actors)
+                    actorAdapter.notifyDataSetChanged()
+                    dialog.dismiss()
+                }
         }
+
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -123,8 +135,8 @@ class MainActivity : AppCompatActivity() {
             val actor = createActorFromViews()
             if (actor != null) {
                 mainViewModel.insertActor(actor)
-                    mainViewModel.actors.add(0,actor)
-                    actorAdapter.notifyDataSetChanged()
+                mainViewModel.actors.add(0, actor)
+                actorAdapter.notifyDataSetChanged()
             }
         }
     }
@@ -158,11 +170,10 @@ class MainActivity : AppCompatActivity() {
                 showToast("actor is added but pet2 is not added")
             }
         } else {
-            showToast("actor is added butpet1 is not added")
+            showToast("actor is added but pet1 is not added")
         }
         return pets
     }
-
 
     @SuppressLint("SuspiciousIndentation")
     private fun openMovieActivity(actor: Actor) {

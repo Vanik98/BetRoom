@@ -13,6 +13,9 @@ import com.vanik.betroom.entity.Actor
 import com.vanik.betroom.entity.Movie
 import com.vanik.betroom.entity.Pet
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
@@ -70,10 +73,12 @@ object Repository {
         dbLite.update("actor", cv, "name= ?", arrayOf(actor.name))
     }
 
-    suspend fun getAllActorsWithRoom() = dbRoom.ActorDao().getAllActors()
+    suspend fun getAllActorsWithRoom(): Flow<List<Actor>> = flow  {
+        emit(dbRoom.ActorDao().getAllActors())
+    }
 
     @SuppressLint("Recycle")
-   suspend fun getAllActorsSqlLite() : List<Actor> {
+    suspend fun getAllActorsSqlLite(): Flow<List<Actor>> = flow {
         val cursorCourses: Cursor = dbLite.rawQuery("SELECT * FROM Actor", null)
         val actors = arrayListOf<Actor>()
         if (cursorCourses.moveToFirst()) {
@@ -98,12 +103,14 @@ object Repository {
                 actors.add(actor)
             } while (cursorCourses.moveToNext())
         }
-        return actors
-    }
+        emit(actors)
+    }.flowOn(Dispatchers.IO)
 
-    suspend fun getMoviesWithRoom() = dbRoom.MovieDao().getAllMovies()
+    suspend fun getMoviesWithRoom() : Flow<List<Movie>> = flow  {
+        emit(dbRoom.MovieDao().getAllMovies())
+    }.flowOn(Dispatchers.IO)
 
-   suspend fun getMoviesSqlLIte(): List<Movie> {
+    suspend fun getMoviesSqlLIte(): Flow<List<Movie>> = flow {
         val cursorCourses: Cursor = dbLite.rawQuery("SELECT * FROM Movie", null)
         val movies = arrayListOf<Movie>()
         if (cursorCourses.moveToFirst()) {
@@ -116,6 +123,6 @@ object Repository {
                 movies.add(movie)
             } while (cursorCourses.moveToNext())
         }
-        return movies
-    }
+        emit(movies)
+    }.flowOn(Dispatchers.IO)
 }
