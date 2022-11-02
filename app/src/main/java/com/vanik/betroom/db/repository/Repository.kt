@@ -5,8 +5,6 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.vanik.betroom.db.room.AppDatabase
 import com.vanik.betroom.db.sqllite.DBHelper
 import com.vanik.betroom.entity.Actor
@@ -20,7 +18,6 @@ import kotlinx.coroutines.withContext
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-
 
 object Repository {
     private lateinit var dbRoom: AppDatabase
@@ -73,9 +70,9 @@ object Repository {
         dbLite.update("actor", cv, "name= ?", arrayOf(actor.name))
     }
 
-    suspend fun getAllActorsWithRoom(): Flow<List<Actor>> = flow  {
+    suspend fun getAllActorsWithRoom(): Flow<List<Actor>> = flow {
         emit(dbRoom.ActorDao().getAllActors())
-    }
+    }.flowOn(Dispatchers.IO)
 
     @SuppressLint("Recycle")
     suspend fun getAllActorsSqlLite(): Flow<List<Actor>> = flow {
@@ -106,7 +103,7 @@ object Repository {
         emit(actors)
     }.flowOn(Dispatchers.IO)
 
-    suspend fun getMoviesWithRoom() : Flow<List<Movie>> = flow  {
+    suspend fun getMoviesWithRoom(): Flow<List<Movie>> = flow {
         emit(dbRoom.MovieDao().getAllMovies())
     }.flowOn(Dispatchers.IO)
 

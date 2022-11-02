@@ -38,13 +38,13 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
         mainViewModel.connectRepository(applicationContext)
-        initViews()
+        setupViews()
         showDbActors()
         chooseRoomOrLite()
         addActor()
     }
 
-    private fun initViews() {
+    private fun setupViews() {
         initDialog()
         initAdapter()
     }
