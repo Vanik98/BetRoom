@@ -95,7 +95,6 @@ class MainActivity : AppCompatActivity() {
             val actor = createActorFromViews()
             if (actor != null) {
                 mainViewModel.insertActor(isRoom,actor)
-                actorAdapter.notifyDataSetChanged()
             }
         }
     }
