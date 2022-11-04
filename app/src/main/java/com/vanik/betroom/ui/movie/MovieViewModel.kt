@@ -24,9 +24,9 @@ class MovieViewModel : ViewModel() {
     }
 
 
-    suspend fun getMovies() = when(isRoom) {
-            true->Repository.getMoviesFromRoom()
-            else->Repository.getMoviesFromSqlLIte()
-        }
+    fun getMovies() = when (isRoom) {
+        true -> Repository.getMoviesFromRoom()
+        else -> Repository.getMoviesFromSqlLIte()
+    }
 
 }
