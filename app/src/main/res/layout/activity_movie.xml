@@ -73,7 +73,9 @@
                 android:id="@+id/moviePetLayout1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone"
+                >
 
                 <TextView
                     android:id="@+id/moviePetNameTextView1"
@@ -107,6 +109,7 @@
                 android:id="@+id/moviePetLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:orientation="horizontal">
 
                 <TextView
