@@ -33,7 +33,7 @@ class MainViewModel : ViewModel() {
     }
 
     private fun fetchAllRoomActors() = viewModelScope.launch {
-        Repository.getAllActorsWithRoom().collect {
+        Repository.getAllActorsFromRoom().collect {
             for (i in it.indices) {
                 actorsRoom.add(it[it.size - i - 1])
             }
@@ -43,7 +43,7 @@ class MainViewModel : ViewModel() {
     }
 
     private fun fetchAllLiteActors() = viewModelScope.launch {
-        Repository.getAllActorsSqlLite().collect {
+        Repository.getAllActorsFromSqlLite().collect {
             for (i in it.indices) {
                 actorsSqlLite.add(it[it.size - i - 1])
             }
@@ -53,11 +53,11 @@ class MainViewModel : ViewModel() {
     fun insertActor(isRoom : Boolean,actor: Actor) = viewModelScope.launch {
         when (isRoom) {
             true -> {
-                Repository.insertActorWithRoom(actor)
+                Repository.insertActorInRoomDb(actor)
                 actorsRoom.add(0, actor)
             }
             false -> {
-                Repository.insertActorWithSqlLite(actor)
+                Repository.insertActorInSqlLiteDb(actor)
                 actorsSqlLite.add(0, actor)
             }
         }

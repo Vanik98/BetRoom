@@ -16,17 +16,17 @@ class MovieViewModel : ViewModel() {
     fun insertMovie(actor: Actor, movie: Movie) {
         viewModelScope.launch {
             if (isRoom) {
-                Repository.insertMovieWithRoom(actor, movie)
+                Repository.insertMovieInRoomDb(actor, movie)
             } else {
-                Repository.insertMovieWithSqlLite(actor, movie)
+                Repository.insertMovieInSqlLiteDb(actor, movie)
             }
         }
     }
 
 
     suspend fun getMovies() = when(isRoom) {
-            true->Repository.getMoviesWithRoom()
-            else->Repository.getMoviesSqlLIte()
+            true->Repository.getMoviesFromRoom()
+            else->Repository.getMoviesFromSqlLIte()
         }
 
 }
