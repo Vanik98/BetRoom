@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
         mainViewModel.connectRepository(applicationContext)
         setupViews()
-        lifecycleScope.launch { showDbActors() }
+        showDbActors()
         chooseRoomOrLite()
         addActor()
     }
@@ -67,64 +67,25 @@ class MainActivity : AppCompatActivity() {
             binding.mainSqlLiteButton.isEnabled = true
             binding.mainRoomButton.isEnabled = false
             mainViewModel.isRoom = true
-            mainViewModel.actors.clear()
-            mainViewModel.actors.addAll(mainViewModel.actorsRoom)
+            mainViewModel.chooseDb()
             actorAdapter.notifyDataSetChanged()
         }
         binding.mainSqlLiteButton.setOnClickListener {
             binding.mainRoomButton.isEnabled = true
             binding.mainSqlLiteButton.isEnabled = false
             mainViewModel.isRoom = false
-            mainViewModel.actors.clear()
-            mainViewModel.actors.addAll(mainViewModel.actorsLite)
-            if (mainViewModel.actorsLite.isNotEmpty()) {
-                actorAdapter.notifyDataSetChanged()
-            } else {
-                lifecycleScope.launch {
-                    showLiteActors()
-                }
-            }
-        }
-    }
-
-    private suspend fun showDbActors() {
-        when (mainViewModel.isRoom) {
-            true -> showRoomActors()
-            false -> showLiteActors()
+            mainViewModel.chooseDb()
+            actorAdapter.notifyDataSetChanged()
         }
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private suspend fun showRoomActors() {
+    private fun showDbActors() {
         dialog.show()
-        mainViewModel.getAllRoomActors().flowWithLifecycle(lifecycle, Lifecycle.State.RESUMED)
-            .collect {
-                mainViewModel.actors.clear()
-                for (i in it.indices) {
-                    mainViewModel.actors.add(it[it.size - 1 - i])
-                }
-                mainViewModel.actorsRoom.clear()
-                mainViewModel.actorsRoom.addAll(mainViewModel.actors)
-                actorAdapter.notifyDataSetChanged()
-                dialog.dismiss()
-            }
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    private suspend fun showLiteActors() {
-        dialog.show()
-        mainViewModel.getAllLiteActors().flowWithLifecycle(lifecycle, Lifecycle.State.RESUMED)
-            .collect {
-                mainViewModel.actors.clear()
-                for (i in it.indices) {
-                    mainViewModel.actors.add(it[it.size - 1 - i])
-                }
-                mainViewModel.actorsLite.clear()
-                mainViewModel.actorsLite.addAll(mainViewModel.actors)
-                actorAdapter.notifyDataSetChanged()
-                dialog.dismiss()
-            }
-
+        mainViewModel.actorsLiveData.observe(this) {
+            dialog.dismiss()
+            actorAdapter.notifyDataSetChanged()
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -133,7 +94,6 @@ class MainActivity : AppCompatActivity() {
             val actor = createActorFromViews()
             if (actor != null) {
                 mainViewModel.insertActor(actor)
-                mainViewModel.actors.add(0, actor)
                 actorAdapter.notifyDataSetChanged()
             }
         }
