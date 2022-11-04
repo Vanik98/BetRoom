@@ -10,7 +10,10 @@ import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.vanik.betroom.R
@@ -18,6 +21,8 @@ import com.vanik.betroom.databinding.ActivityMainBinding
 import com.vanik.betroom.entity.Actor
 import com.vanik.betroom.entity.Pet
 import com.vanik.betroom.ui.movie.MovieActivity
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.util.*
@@ -26,6 +31,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var actorAdapter: ActorAdapter
     private lateinit var dialog: Dialog
+    private var isRoom = true
 
     private lateinit var mainViewModel: MainViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,18 +39,18 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
         mainViewModel.connectRepository(applicationContext)
-        initViews()
+        setupViews()
         showDbActors()
         chooseRoomOrLite()
         addActor()
     }
 
-    private fun initViews(){
+    private fun setupViews() {
         initDialog()
         initAdapter()
     }
 
-    private fun initDialog(){
+    private fun initDialog() {
         dialog = Dialog(this, android.R.style.Theme_DeviceDefault_Light_NoActionBar_Fullscreen)
         dialog.setContentView(R.layout.dialog_layout)
     }
@@ -59,61 +65,27 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("NotifyDataSetChanged")
     private fun chooseRoomOrLite() {
         binding.mainRoomButton.setOnClickListener {
-            binding.mainSqlLiteButton.isEnabled = true
-            binding.mainRoomButton.isEnabled = false
-            mainViewModel.isRoom = true
-            mainViewModel.actors.clear()
-            mainViewModel.actors.addAll(mainViewModel.actorsRoom)
+            isRoom = true
+            binding.mainRoomButton.isEnabled = !isRoom
+            binding.mainSqlLiteButton.isEnabled = isRoom
+            mainViewModel.chooseDb(isRoom)
             actorAdapter.notifyDataSetChanged()
         }
         binding.mainSqlLiteButton.setOnClickListener {
-            binding.mainRoomButton.isEnabled = true
-            binding.mainSqlLiteButton.isEnabled = false
-            mainViewModel.isRoom = false
-            mainViewModel.actors.clear()
-            mainViewModel.actors.addAll(mainViewModel.actorsLite)
-            if (mainViewModel.actorsLite.isNotEmpty()) {
-                actorAdapter.notifyDataSetChanged()
-            } else {
-                showLiteActors()
-            }
+            isRoom = false
+            binding.mainRoomButton.isEnabled = !isRoom
+            binding.mainSqlLiteButton.isEnabled = isRoom
+            mainViewModel.chooseDb(isRoom)
+            actorAdapter.notifyDataSetChanged()
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun showDbActors() {
-        when (mainViewModel.isRoom) {
-            true -> showRoomActors()
-            false -> showLiteActors()
-        }
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    private fun showRoomActors() {
         dialog.show()
-        mainViewModel.getAllRoomActors().observe(this) {
-            mainViewModel.actors.clear()
-            for (i in it.indices) {
-                mainViewModel.actors.add(it[it.size - 1 - i])
-            }
-            mainViewModel.actorsRoom.clear()
-            mainViewModel.actorsRoom.addAll(mainViewModel.actors)
-            actorAdapter.notifyDataSetChanged()
+        mainViewModel.actorsLiveData.observe(this) {
             dialog.dismiss()
-        }
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    private fun showLiteActors() {
-        dialog.show()
-        mainViewModel.getAllLiteActors().observe(this) {
-            mainViewModel.actors.clear()
-            for (i in it.indices) {
-                mainViewModel.actors.add(it[it.size - 1 - i])
-            }
-            mainViewModel.actorsLite.clear()
-            mainViewModel.actorsLite.addAll(mainViewModel.actors)
             actorAdapter.notifyDataSetChanged()
-            dialog.dismiss()
         }
     }
 
@@ -122,9 +94,8 @@ class MainActivity : AppCompatActivity() {
         binding.mainAddActorButton.setOnClickListener {
             val actor = createActorFromViews()
             if (actor != null) {
-                mainViewModel.insertActor(actor)
-                    mainViewModel.actors.add(0,actor)
-                    actorAdapter.notifyDataSetChanged()
+                mainViewModel.insertActor(isRoom,actor)
+                actorAdapter.notifyDataSetChanged()
             }
         }
     }
@@ -158,16 +129,15 @@ class MainActivity : AppCompatActivity() {
                 showToast("actor is added but pet2 is not added")
             }
         } else {
-            showToast("actor is added butpet1 is not added")
+            showToast("actor is added but pet1 is not added")
         }
         return pets
     }
 
-
     @SuppressLint("SuspiciousIndentation")
     private fun openMovieActivity(actor: Actor) {
         val intent = Intent(this, MovieActivity::class.java)
-        intent.putExtra("isRoom", mainViewModel.isRoom)
+        intent.putExtra("isRoom", isRoom)
         intent.putExtra("actor", Json.encodeToString(actor))
         startActivity(intent)
     }

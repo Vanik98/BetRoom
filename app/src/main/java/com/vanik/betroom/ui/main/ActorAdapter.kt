@@ -37,6 +37,8 @@ class ActorAdapter(
 
         @SuppressLint("SetTextI18n")
         private fun badCodeSetPetsInViews(actor: Actor) {
+            binding.actorItemPetLayout1.visibility = View.GONE
+            binding.actorItemPetLayout2.visibility = View.GONE
             if (actor.pets != null) {
                 binding.actorItemPetLayout1.visibility = View.VISIBLE
                 binding.actorItemPetNameTextView1.text = actor.pets[0]!!.name
