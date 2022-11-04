@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.vanik.betroom.db.repository.AddActorUseCase
+import com.vanik.betroom.db.repository.GetActorUseCase
 import com.vanik.betroom.db.repository.Repository
 import com.vanik.betroom.entity.Actor
 import kotlinx.coroutines.launch
@@ -13,9 +15,13 @@ class MainViewModel : ViewModel() {
     var actors = arrayListOf<Actor>()
     private val actorsRoom = arrayListOf<Actor>()
     private val actorsSqlLite = arrayListOf<Actor>()
+    private lateinit var addActorUseCase: AddActorUseCase
+    private lateinit var getAddActorUseCase: GetActorUseCase
 
     fun connectRepository(context: Context) {
         Repository.buildRepo(context)
+        addActorUseCase = AddActorUseCase()
+        getAddActorUseCase = GetActorUseCase()
         fetchData()
     }
 
@@ -25,7 +31,7 @@ class MainViewModel : ViewModel() {
     }
 
     private fun fetchAllRoomActors() = viewModelScope.launch {
-        Repository.getAllActorsFromRoom().collect {
+        getAddActorUseCase.executeInRoom().collect {
             for (i in it.indices) {
                 actorsRoom.add(it[it.size - i - 1])
             }
@@ -35,7 +41,7 @@ class MainViewModel : ViewModel() {
     }
 
     private fun fetchAllLiteActors() = viewModelScope.launch {
-        Repository.getAllActorsFromSqlLite().collect {
+        getAddActorUseCase.executeInSqlLite().collect {
             for (i in it.indices) {
                 actorsSqlLite.add(it[it.size - i - 1])
             }
@@ -45,11 +51,11 @@ class MainViewModel : ViewModel() {
     fun insertActor(isRoom : Boolean,actor: Actor) = viewModelScope.launch {
         when (isRoom) {
             true -> {
-                Repository.insertActorInRoomDb(actor)
+                addActorUseCase.executeInRoom(actor)
                 actorsRoom.add(0, actor)
             }
             false -> {
-                Repository.insertActorInSqlLiteDb(actor)
+                addActorUseCase.executeInSqlLite(actor)
                 actorsSqlLite.add(0, actor)
             }
         }

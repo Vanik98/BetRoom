@@ -36,7 +36,7 @@ object Repository {
         dbRoom.ActorDao().insert(actor)
     }
 
-    suspend fun insertActorInSqlLiteDb(actor: Actor) = withContext(Dispatchers.IO) {
+    suspend fun insertActorInSqlLiteDb(actor: Actor) {
         val cv = ContentValues()
         cv.put("name", actor.name)
         cv.put("surname", actor.surname)
@@ -46,12 +46,12 @@ object Repository {
         dbLite.insert("actor", null, cv)
     }
 
-    suspend fun insertMovieInRoomDb(actor: Actor, movie: Movie) = withContext(Dispatchers.IO) {
+    suspend fun insertMovieInRoomDb(actor: Actor, movie: Movie) {
         dbRoom.MovieDao().insert(movie)
         dbRoom.ActorDao().update(actor)
     }
 
-    suspend fun insertMovieInSqlLiteDb(actor: Actor, movie: Movie) = withContext(Dispatchers.IO) {
+    suspend fun insertMovieInSqlLiteDb(actor: Actor, movie: Movie) {
         //movie insert
         var cv = ContentValues()
         cv.put("id", movie.id)
@@ -72,7 +72,7 @@ object Repository {
 
     fun getAllActorsFromRoom(): Flow<List<Actor>> = flow {
         emit(dbRoom.ActorDao().getAllActors())
-    }.flowOn(Dispatchers.IO)
+    }
 
     @SuppressLint("Recycle")
     fun getAllActorsFromSqlLite(): Flow<List<Actor>> = flow {
@@ -101,11 +101,11 @@ object Repository {
             } while (cursorCourses.moveToNext())
         }
         emit(actors)
-    }.flowOn(Dispatchers.IO)
+    }
 
     fun getMoviesFromRoom(): Flow<List<Movie>> = flow {
         emit(dbRoom.MovieDao().getAllMovies())
-    }.flowOn(Dispatchers.IO)
+    }
 
     fun getMoviesFromSqlLIte(): Flow<List<Movie>> = flow {
         val cursorCourses: Cursor = dbLite.rawQuery("SELECT * FROM Movie", null)
@@ -121,5 +121,5 @@ object Repository {
             } while (cursorCourses.moveToNext())
         }
         emit(movies)
-    }.flowOn(Dispatchers.IO)
+    }
 }
