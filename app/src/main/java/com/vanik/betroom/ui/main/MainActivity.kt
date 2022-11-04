@@ -31,6 +31,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var actorAdapter: ActorAdapter
     private lateinit var dialog: Dialog
+    private var isRoom = true
 
     private lateinit var mainViewModel: MainViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,17 +65,17 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("NotifyDataSetChanged")
     private fun chooseRoomOrLite() {
         binding.mainRoomButton.setOnClickListener {
-            binding.mainSqlLiteButton.isEnabled = true
-            binding.mainRoomButton.isEnabled = false
-            mainViewModel.isRoom = true
-            mainViewModel.chooseDb()
+            isRoom = true
+            binding.mainRoomButton.isEnabled = !isRoom
+            binding.mainSqlLiteButton.isEnabled = isRoom
+            mainViewModel.chooseDb(isRoom)
             actorAdapter.notifyDataSetChanged()
         }
         binding.mainSqlLiteButton.setOnClickListener {
-            binding.mainRoomButton.isEnabled = true
-            binding.mainSqlLiteButton.isEnabled = false
-            mainViewModel.isRoom = false
-            mainViewModel.chooseDb()
+            isRoom = false
+            binding.mainRoomButton.isEnabled = !isRoom
+            binding.mainSqlLiteButton.isEnabled = isRoom
+            mainViewModel.chooseDb(isRoom)
             actorAdapter.notifyDataSetChanged()
         }
     }
@@ -93,7 +94,7 @@ class MainActivity : AppCompatActivity() {
         binding.mainAddActorButton.setOnClickListener {
             val actor = createActorFromViews()
             if (actor != null) {
-                mainViewModel.insertActor(actor)
+                mainViewModel.insertActor(isRoom,actor)
                 actorAdapter.notifyDataSetChanged()
             }
         }
@@ -136,7 +137,7 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("SuspiciousIndentation")
     private fun openMovieActivity(actor: Actor) {
         val intent = Intent(this, MovieActivity::class.java)
-        intent.putExtra("isRoom", mainViewModel.isRoom)
+        intent.putExtra("isRoom", isRoom)
         intent.putExtra("actor", Json.encodeToString(actor))
         startActivity(intent)
     }

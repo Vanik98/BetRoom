@@ -21,7 +21,6 @@ class MainViewModel : ViewModel() {
     var actors = arrayListOf<Actor>()
     private val actorsRoom = arrayListOf<Actor>()
     private val actorsSqlLite = arrayListOf<Actor>()
-    var isRoom = true
 
     fun connectRepository(context: Context) {
         Repository.buildRepo(context)
@@ -51,7 +50,7 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    fun insertActor(actor: Actor) = viewModelScope.launch {
+    fun insertActor(isRoom : Boolean,actor: Actor) = viewModelScope.launch {
         when (isRoom) {
             true -> {
                 Repository.insertActorWithRoom(actor)
@@ -66,7 +65,7 @@ class MainViewModel : ViewModel() {
         actorsLiveData.value = actors
     }
 
-    fun chooseDb() {
+    fun chooseDb(isRoom : Boolean) {
         actors.clear()
         when (isRoom) {
             true -> { actors.addAll(actorsRoom) }
