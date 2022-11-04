@@ -70,12 +70,12 @@ object Repository {
         dbLite.update("actor", cv, "name= ?", arrayOf(actor.name))
     }
 
-    suspend fun getAllActorsFromRoom(): Flow<List<Actor>> = flow {
+    fun getAllActorsFromRoom(): Flow<List<Actor>> = flow {
         emit(dbRoom.ActorDao().getAllActors())
     }.flowOn(Dispatchers.IO)
 
     @SuppressLint("Recycle")
-    suspend fun getAllActorsFromSqlLite(): Flow<List<Actor>> = flow {
+    fun getAllActorsFromSqlLite(): Flow<List<Actor>> = flow {
         val cursorCourses: Cursor = dbLite.rawQuery("SELECT * FROM Actor", null)
         val actors = arrayListOf<Actor>()
         if (cursorCourses.moveToFirst()) {
@@ -103,11 +103,11 @@ object Repository {
         emit(actors)
     }.flowOn(Dispatchers.IO)
 
-    suspend fun getMoviesFromRoom(): Flow<List<Movie>> = flow {
+    fun getMoviesFromRoom(): Flow<List<Movie>> = flow {
         emit(dbRoom.MovieDao().getAllMovies())
     }.flowOn(Dispatchers.IO)
 
-    suspend fun getMoviesFromSqlLIte(): Flow<List<Movie>> = flow {
+    fun getMoviesFromSqlLIte(): Flow<List<Movie>> = flow {
         val cursorCourses: Cursor = dbLite.rawQuery("SELECT * FROM Movie", null)
         val movies = arrayListOf<Movie>()
         if (cursorCourses.moveToFirst()) {

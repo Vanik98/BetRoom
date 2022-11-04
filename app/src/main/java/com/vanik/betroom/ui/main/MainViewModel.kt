@@ -1,19 +1,11 @@
 package com.vanik.betroom.ui.main
 
 import android.content.Context
-import androidx.core.os.trace
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
-import com.vanik.betroom.entity.Actor
 import com.vanik.betroom.db.repository.Repository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import com.vanik.betroom.entity.Actor
 import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
