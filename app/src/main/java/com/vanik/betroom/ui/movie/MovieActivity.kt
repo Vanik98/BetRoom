@@ -41,7 +41,7 @@ class MovieActivity : AppCompatActivity() {
         movieViewModel = ViewModelProvider(this)[MovieViewModel::class.java]
         initialiseAdapter()
         showActor()
-        showDbMovies()
+        lifecycleScope.launch { showDbMovies() }
         addMovie()
     }
 
@@ -109,18 +109,15 @@ class MovieActivity : AppCompatActivity() {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private fun showDbMovies() {
+    suspend fun showDbMovies() {
         movieViewModel.isRoom = intent.getBooleanExtra("isRoom", true)
-        lifecycleScope.launch {
-            movieViewModel.getMovies().flowWithLifecycle(lifecycle, Lifecycle.State.RESUMED)
-                .collect  {
+            movieViewModel.getMovies().flowWithLifecycle(lifecycle, Lifecycle.State.RESUMED).collect  {
                 movieViewModel.movies.clear()
                 for (i in it.indices) {
                     movieViewModel.movies.add(it[it.size - 1 - i])
                 }
                 adapter.notifyDataSetChanged()
             }
-        }
     }
 
     private fun showToast(message: String) {
