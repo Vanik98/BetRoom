@@ -22,7 +22,6 @@ class MovieViewModel(val addMovieUseCase: AddMovieUseCase,val getMovieUseCase: G
         }
     }
 
-
     fun getMovies() = when (isRoom) {
         true -> getMovieUseCase.executeInRoom()
         else -> getMovieUseCase.executeInSqlLite()
