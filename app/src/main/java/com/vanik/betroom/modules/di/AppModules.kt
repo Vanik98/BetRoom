@@ -13,11 +13,6 @@ import com.vanik.betroom.ui.movie.MovieViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
-val actorModule = module {
-    single { AddActorUseCase(get()) }
-    single { GetActorUseCase(get()) }
-}
-
 val repositoryModule = module {
     single { DBHelper(get()) }
     single { get<AppDatabase>().ActorDao() }
@@ -26,11 +21,16 @@ val repositoryModule = module {
     single { Room.databaseBuilder(get(), AppDatabase::class.java, "database_room").build() }
 }
 
-val mainViewModelModule = module { viewModel { MainViewModel(get(), get()) } }
-
-val movieViewModelModule = module { viewModel { MovieViewModel(get(), get()) } }
+val actorModule = module {
+    single { AddActorUseCase(get()) }
+    single { GetActorUseCase(get()) }
+}
 
 val movieModule = module {
     single { AddMovieUseCase(get()) }
     single { GetMovieUseCase(get()) }
 }
+
+val mainViewModelModule = module { viewModel { MainViewModel(get(), get()) } }
+
+val movieViewModelModule = module { viewModel { MovieViewModel(get(), get()) } }
