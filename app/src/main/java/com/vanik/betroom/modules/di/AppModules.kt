@@ -15,10 +15,10 @@ import org.koin.dsl.module
 
 val repositoryModule = module {
     single { DBHelper(get()) }
+    single { Room.databaseBuilder(get(), AppDatabase::class.java, "database_room").build() }
     single { get<AppDatabase>().ActorDao() }
     single { get<AppDatabase>().MovieDao() }
     single { Repository(get(), get(), get()) }
-    single { Room.databaseBuilder(get(), AppDatabase::class.java, "database_room").build() }
 }
 
 val actorModule = module {
