@@ -28,15 +28,11 @@ val repositoryModule = module {
 }
 
 val mainViewModelModule = module {
-    viewModel {
-        MainViewModel(get(), get())
-    }
+    viewModel { MainViewModel(get(), get()) }
 }
 
 val movieViewModelModule = module {
-    viewModel {
-        MovieViewModel(get(), get())
-    }
+    viewModel { MovieViewModel(get(), get()) }
 }
 
 val movieModule = module {
