@@ -8,17 +8,17 @@ import kotlinx.coroutines.withContext
 
 private val backgroundThread = Dispatchers.IO
 
-class GetActorUseCase() {
+class GetActorUseCase(val repository: Repository) {
 
-    fun executeInRoom() = Repository.getAllActorsFromRoom().flowOn(backgroundThread)
+    fun executeInRoom() = repository.getAllActorsFromRoom().flowOn(backgroundThread)
 
-    fun executeInSqlLite() = Repository.getAllActorsFromSqlLite().flowOn(backgroundThread)
+    fun executeInSqlLite() = repository.getAllActorsFromSqlLite().flowOn(backgroundThread)
 }
 
-class AddActorUseCase {
+class AddActorUseCase(val repository: Repository) {
     suspend fun executeInRoom(actor: Actor) = withContext(backgroundThread) {
         try {
-            Repository.insertActorInRoomDb(actor)
+            repository.insertActorInRoomDb(actor)
         } catch (e: java.lang.Exception) {
 
         }
@@ -26,7 +26,7 @@ class AddActorUseCase {
 
     suspend fun executeInSqlLite(actor: Actor) = withContext(backgroundThread) {
         try {
-            Repository.insertActorInSqlLiteDb(actor)
+            repository.insertActorInSqlLiteDb(actor)
         } catch (e: java.lang.Exception) {
 
         }

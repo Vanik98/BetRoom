@@ -16,11 +16,12 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-object Repository {
+class Repository(context: Context) {
     private lateinit var dbRoom: AppDatabase
     private lateinit var dbLite: SQLiteDatabase
 
-    fun buildRepo(context: Context) {
+    init {
+
         if (!this::dbRoom.isInitialized) {
             dbRoom = AppDatabase.getInstance(context)
         }
@@ -28,6 +29,7 @@ object Repository {
             dbLite = DBHelper.getInstance(context).writableDatabase
         }
     }
+
 
     suspend fun insertActorInRoomDb(actor: Actor) {
         dbRoom.ActorDao().insert(actor)
