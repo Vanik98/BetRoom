@@ -15,7 +15,7 @@ class GetMovieUseCase(private val repository: Repository) {
     fun executeInSqlLite() = repository.getMoviesFromSqlLIte().flowOn(backgroundThread)
 }
 
-class AddMovieUseCase(val repository: Repository) {
+class AddMovieUseCase(private val repository: Repository) {
     suspend fun executeInRoom(actor: Actor, movie: Movie) = withContext(backgroundThread) {
         try {
             repository.insertMovieInRoomDb(actor, movie)

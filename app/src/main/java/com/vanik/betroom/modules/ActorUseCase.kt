@@ -15,7 +15,7 @@ class GetActorUseCase(private val repository: Repository) {
     fun executeInSqlLite() = repository.getAllActorsFromSqlLite().flowOn(backgroundThread)
 }
 
-class AddActorUseCase(val repository: Repository) {
+class AddActorUseCase(private val repository: Repository) {
     suspend fun executeInRoom(actor: Actor) = withContext(backgroundThread) {
         try {
             repository.insertActorInRoomDb(actor)
