@@ -2,10 +2,9 @@ package com.vanik.betroom.modules.repository
 
 import android.annotation.SuppressLint
 import android.content.ContentValues
-import android.content.Context
 import android.database.Cursor
-import android.database.sqlite.SQLiteDatabase
-import com.vanik.betroom.modules.room.AppDatabase
+import com.vanik.betroom.modules.room.dao.ActorDao
+import com.vanik.betroom.modules.room.dao.MovieDao
 import com.vanik.betroom.modules.sqllite.DBHelper
 import com.vanik.betroom.proxy.model.Actor
 import com.vanik.betroom.proxy.model.Movie
@@ -16,23 +15,10 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-class Repository(context: Context) {
-    private lateinit var dbRoom: AppDatabase
-    private lateinit var dbLite: SQLiteDatabase
-
-    init {
-
-        if (!this::dbRoom.isInitialized) {
-            dbRoom = AppDatabase.getInstance(context)
-        }
-        if (!this::dbLite.isInitialized) {
-            dbLite = DBHelper.getInstance(context).writableDatabase
-        }
-    }
-
+class Repository(val  actorDao: ActorDao,val movieDao: MovieDao,val dbLite: DBHelper) {
 
     suspend fun insertActorInRoomDb(actor: Actor) {
-        dbRoom.ActorDao().insert(actor)
+       actorDao.insert(actor)
     }
 
     suspend fun insertActorInSqlLiteDb(actor: Actor) {
@@ -42,12 +28,12 @@ class Repository(context: Context) {
         cv.put("age", actor.age)
         val petJson: String = Json.encodeToString(actor.pets)
         cv.put("pets", petJson)
-        dbLite.insert("actor", null, cv)
+        dbLite.writableDatabase.insert("actor", null, cv)
     }
 
     suspend fun insertMovieInRoomDb(actor: Actor, movie: Movie) {
-        dbRoom.MovieDao().insert(movie)
-        dbRoom.ActorDao().update(actor)
+        movieDao.insert(movie)
+        actorDao.update(actor)
     }
 
     suspend fun insertMovieInSqlLiteDb(actor: Actor, movie: Movie) {
@@ -56,7 +42,7 @@ class Repository(context: Context) {
         cv.put("id", movie.id)
         cv.put("name", movie.name)
         cv.put("imdbRate", movie.imdbRate)
-        dbLite.insert("movie", null, cv)
+        dbLite.writableDatabase.insert("movie", null, cv)
         //actor update
         cv = ContentValues()
         cv.put("name", actor.name)
@@ -66,16 +52,16 @@ class Repository(context: Context) {
         cv.put("pets", petJson)
         val movieIdsJson: String = Json.encodeToString(actor.movieIds)
         cv.put("movieIds", movieIdsJson)
-        dbLite.update("actor", cv, "name= ?", arrayOf(actor.name))
+        dbLite.writableDatabase.update("actor", cv, "name= ?", arrayOf(actor.name))
     }
 
     fun getAllActorsFromRoom(): Flow<List<Actor>> = flow {
-        emit(dbRoom.ActorDao().getAllActors())
+        emit(actorDao.getAllActors())
     }
 
     @SuppressLint("Recycle")
     fun getAllActorsFromSqlLite(): Flow<List<Actor>> = flow {
-        val cursorCourses: Cursor = dbLite.rawQuery("SELECT * FROM Actor", null)
+        val cursorCourses: Cursor = dbLite.writableDatabase.rawQuery("SELECT * FROM Actor", null)
         val actors = arrayListOf<Actor>()
         if (cursorCourses.moveToFirst()) {
             do {
@@ -103,11 +89,11 @@ class Repository(context: Context) {
     }
 
     fun getMoviesFromRoom(): Flow<List<Movie>> = flow {
-        emit(dbRoom.MovieDao().getAllMovies())
+        emit(movieDao.getAllMovies())
     }
 
     fun getMoviesFromSqlLIte(): Flow<List<Movie>> = flow {
-        val cursorCourses: Cursor = dbLite.rawQuery("SELECT * FROM Movie", null)
+        val cursorCourses: Cursor = dbLite.writableDatabase.rawQuery("SELECT * FROM Movie", null)
         val movies = arrayListOf<Movie>()
         if (cursorCourses.moveToFirst()) {
             do {

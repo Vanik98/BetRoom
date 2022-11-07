@@ -90,9 +90,7 @@ class MovieActivity : AppCompatActivity() {
         binding.movieAddButton.setOnClickListener {
             val movie = createMovieFromViews()
             if (movie != null) {
-                if (actor.movieIds == null) {
-                    actor.movieIds = arrayListOf()
-                }
+                if (actor.movieIds == null) { actor.movieIds = arrayListOf() }
                 (actor.movieIds as ArrayList<Int>).add(movie.id)
                 movieViewModel.insertMovie(actor, movie)
                 (adapter.movies as ArrayList<Movie>).add(0, movie)
@@ -103,7 +101,7 @@ class MovieActivity : AppCompatActivity() {
         }
     }
 
-    @SuppressLint("NotifyDataSetChanged")
+    @SuppressLint("NotifyDataSetChanged", "SuspiciousIndentation")
     suspend fun showDbMovies() {
         movieViewModel.isRoom = intent.getBooleanExtra("isRoom", true)
             movieViewModel.getMovies().flowWithLifecycle(lifecycle, Lifecycle.State.RESUMED).collect  {

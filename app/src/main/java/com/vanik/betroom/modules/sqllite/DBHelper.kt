@@ -4,7 +4,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
-class DBHelper private constructor(context: Context) : SQLiteOpenHelper(context,"database_lite",null,1) {
+class DBHelper (context: Context) : SQLiteOpenHelper(context,"database_lite",null,1) {
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL("create table Actor ("
                 + "name text primary key NOT NULL,"
@@ -23,14 +23,4 @@ class DBHelper private constructor(context: Context) : SQLiteOpenHelper(context,
         TODO("Not yet implemented")
     }
 
-    companion object {
-        @Volatile
-        private var INSTANCE: DBHelper? = null
-
-        fun getInstance(context: Context): DBHelper =
-            INSTANCE ?: synchronized(this) {
-                INSTANCE ?: DBHelper(context).also { INSTANCE = it }
-            }
-
-    }
 }

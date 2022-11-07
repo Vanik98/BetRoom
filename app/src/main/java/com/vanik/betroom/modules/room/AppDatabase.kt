@@ -15,18 +15,5 @@ import com.vanik.betroom.modules.room.dao.MovieDao
 abstract class AppDatabase : RoomDatabase() {
     abstract fun ActorDao(): ActorDao
     abstract fun MovieDao(): MovieDao
-
-    companion object {
-        @Volatile
-        private var INSTANCE: AppDatabase? = null
-
-        fun getInstance(context: Context): AppDatabase =
-            INSTANCE ?: synchronized(this) {
-                INSTANCE ?: buildDatabase(context).also { INSTANCE = it }
-            }
-
-        private fun buildDatabase(context: Context) =
-            Room.databaseBuilder(context, AppDatabase::class.java, "database_room").build()
-    }
 }
 
