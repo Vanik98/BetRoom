@@ -27,13 +27,9 @@ val repositoryModule = module {
     single { Room.databaseBuilder(get(), AppDatabase::class.java, "database_room").build() }
 }
 
-val mainViewModelModule = module {
-    viewModel { MainViewModel(get(), get()) }
-}
+val mainViewModelModule = module { viewModel { MainViewModel(get(), get()) } }
 
-val movieViewModelModule = module {
-    viewModel { MovieViewModel(get(), get()) }
-}
+val movieViewModelModule = module { viewModel { MovieViewModel(get(), get()) } }
 
 val movieModule = module {
     single { AddMovieUseCase(get()) }
