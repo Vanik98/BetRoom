@@ -4,10 +4,10 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.vanik.betroom.modules.AddActorUseCase
+import com.vanik.betroom.modules.GetActorUseCase
 import com.vanik.betroom.modules.repository.Repository
 import com.vanik.betroom.proxy.model.Actor
-import com.vanik.betroom.ui.AddActorUseCase
-import com.vanik.betroom.ui.GetActorUseCase
 import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {

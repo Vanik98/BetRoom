@@ -1,5 +1,4 @@
-package com.vanik.betroom.ui
-
+package com.vanik.betroom.modules
 
 import com.vanik.betroom.modules.repository.Repository
 import com.vanik.betroom.proxy.model.Actor
