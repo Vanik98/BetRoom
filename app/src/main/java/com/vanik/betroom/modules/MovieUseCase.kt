@@ -9,16 +9,16 @@ import kotlinx.coroutines.withContext
 
 private val backgroundThread = Dispatchers.IO
 
-class GetMovieUseCase() {
-    fun executeInRoom() = Repository.getMoviesFromRoom().flowOn(backgroundThread)
+class GetMovieUseCase(val repository: Repository) {
+    fun executeInRoom() = repository.getMoviesFromRoom().flowOn(backgroundThread)
 
-    fun executeInSqlLite() = Repository.getMoviesFromSqlLIte().flowOn(backgroundThread)
+    fun executeInSqlLite() = repository.getMoviesFromSqlLIte().flowOn(backgroundThread)
 }
 
-class AddMovieUseCase {
+class AddMovieUseCase(val repository: Repository) {
     suspend fun executeInRoom(actor: Actor, movie: Movie) = withContext(backgroundThread) {
         try {
-            Repository.insertMovieInRoomDb(actor, movie)
+            repository.insertMovieInRoomDb(actor, movie)
         } catch (e: java.lang.Exception) {
 
         }
@@ -27,7 +27,7 @@ class AddMovieUseCase {
 
     suspend fun executeInSqlLite(actor: Actor, movie: Movie) = withContext(backgroundThread) {
         try {
-            Repository.insertMovieInSqlLiteDb(actor, movie)
+            repository.insertMovieInSqlLiteDb(actor, movie)
         } catch (e: java.lang.Exception) {
 
         }

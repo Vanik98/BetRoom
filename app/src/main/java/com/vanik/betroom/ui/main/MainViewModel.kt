@@ -10,22 +10,13 @@ import com.vanik.betroom.modules.repository.Repository
 import com.vanik.betroom.proxy.model.Actor
 import kotlinx.coroutines.launch
 
-class MainViewModel : ViewModel() {
+class MainViewModel(var addActorUseCase: AddActorUseCase,var getAddActorUseCase: GetActorUseCase) : ViewModel() {
     val actorsLiveData: MutableLiveData<List<Actor>> = MutableLiveData()
     var actors = arrayListOf<Actor>()
     private val actorsRoom = arrayListOf<Actor>()
     private val actorsSqlLite = arrayListOf<Actor>()
-    private lateinit var addActorUseCase: AddActorUseCase
-    private lateinit var getAddActorUseCase: GetActorUseCase
 
-    fun connectRepository(context: Context) {
-        Repository.buildRepo(context)
-        addActorUseCase = AddActorUseCase()
-        getAddActorUseCase = GetActorUseCase()
-        fetchData()
-    }
-
-    private fun fetchData() {
+    fun fetchData() {
         fetchAllRoomActors()
         fetchAllLiteActors()
     }
@@ -48,7 +39,7 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    fun insertActor(isRoom : Boolean,actor: Actor) = viewModelScope.launch {
+    fun insertActor(isRoom: Boolean, actor: Actor) = viewModelScope.launch {
         when (isRoom) {
             true -> {
                 addActorUseCase.executeInRoom(actor)
@@ -63,11 +54,15 @@ class MainViewModel : ViewModel() {
         actorsLiveData.value = actors
     }
 
-    fun chooseDb(isRoom : Boolean) {
+    fun chooseDb(isRoom: Boolean) {
         actors.clear()
         when (isRoom) {
-            true -> { actors.addAll(actorsRoom) }
-            false -> { actors.addAll(actorsSqlLite) }
+            true -> {
+                actors.addAll(actorsRoom)
+            }
+            false -> {
+                actors.addAll(actorsSqlLite)
+            }
         }
     }
 

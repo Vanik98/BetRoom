@@ -14,15 +14,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.vanik.betroom.R
 import com.vanik.betroom.databinding.ActivityMovieBinding
+import com.vanik.betroom.modules.di.actorModule
+import com.vanik.betroom.modules.di.movieViewModelModule
 import com.vanik.betroom.proxy.model.Actor
 import com.vanik.betroom.proxy.model.Movie
 import kotlinx.coroutines.launch
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.context.startKoin
 
 class MovieActivity : AppCompatActivity() {
-    private lateinit var movieViewModel: MovieViewModel
+    private val movieViewModel: MovieViewModel by viewModel<MovieViewModel>()
     private lateinit var binding: ActivityMovieBinding
     private lateinit var actor: Actor
     private lateinit var adapter: MovieAdapter
@@ -30,7 +34,6 @@ class MovieActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_movie)
-        movieViewModel = ViewModelProvider(this)[MovieViewModel::class.java]
         initialiseAdapter()
         showActor()
         lifecycleScope.launch { showDbMovies() }
