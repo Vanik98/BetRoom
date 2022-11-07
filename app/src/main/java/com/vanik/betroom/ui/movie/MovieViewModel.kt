@@ -8,7 +8,10 @@ import com.vanik.betroom.proxy.model.Actor
 import com.vanik.betroom.proxy.model.Movie
 import kotlinx.coroutines.launch
 
-class MovieViewModel(val addMovieUseCase: AddMovieUseCase,val getMovieUseCase: GetMovieUseCase) : ViewModel() {
+class MovieViewModel(
+    private val addMovieUseCase: AddMovieUseCase,
+    private val getMovieUseCase: GetMovieUseCase
+) : ViewModel() {
     val movies = arrayListOf<Movie>()
     var isRoom = true
 

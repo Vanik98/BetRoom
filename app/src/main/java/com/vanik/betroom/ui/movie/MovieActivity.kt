@@ -1,21 +1,18 @@
 package com.vanik.betroom.ui.movie
 
 import android.annotation.SuppressLint
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.vanik.betroom.R
 import com.vanik.betroom.databinding.ActivityMovieBinding
-import com.vanik.betroom.modules.di.actorModule
-import com.vanik.betroom.modules.di.movieViewModelModule
 import com.vanik.betroom.proxy.model.Actor
 import com.vanik.betroom.proxy.model.Movie
 import kotlinx.coroutines.launch
@@ -23,7 +20,6 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.context.startKoin
 
 class MovieActivity : AppCompatActivity() {
     private val movieViewModel: MovieViewModel by viewModel<MovieViewModel>()

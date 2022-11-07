@@ -8,7 +8,7 @@ import kotlinx.coroutines.withContext
 
 private val backgroundThread = Dispatchers.IO
 
-class GetActorUseCase(val repository: Repository) {
+class GetActorUseCase(private val repository: Repository) {
 
     fun executeInRoom() = repository.getAllActorsFromRoom().flowOn(backgroundThread)
 

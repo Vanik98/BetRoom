@@ -1,6 +1,5 @@
 package com.vanik.betroom.modules.di
 
-import android.database.sqlite.SQLiteOpenHelper
 import androidx.room.Room
 import com.vanik.betroom.modules.AddActorUseCase
 import com.vanik.betroom.modules.AddMovieUseCase

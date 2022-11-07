@@ -1,16 +1,17 @@
 package com.vanik.betroom.ui.main
 
-import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vanik.betroom.modules.AddActorUseCase
 import com.vanik.betroom.modules.GetActorUseCase
-import com.vanik.betroom.modules.repository.Repository
 import com.vanik.betroom.proxy.model.Actor
 import kotlinx.coroutines.launch
 
-class MainViewModel(var addActorUseCase: AddActorUseCase,var getAddActorUseCase: GetActorUseCase) : ViewModel() {
+class MainViewModel(
+    private val addActorUseCase: AddActorUseCase,
+    private val getAddActorUseCase: GetActorUseCase
+) : ViewModel() {
     val actorsLiveData: MutableLiveData<List<Actor>> = MutableLiveData()
     var actors = arrayListOf<Actor>()
     private val actorsRoom = arrayListOf<Actor>()

@@ -9,7 +9,7 @@ import kotlinx.coroutines.withContext
 
 private val backgroundThread = Dispatchers.IO
 
-class GetMovieUseCase(val repository: Repository) {
+class GetMovieUseCase(private val repository: Repository) {
     fun executeInRoom() = repository.getMoviesFromRoom().flowOn(backgroundThread)
 
     fun executeInSqlLite() = repository.getMoviesFromSqlLIte().flowOn(backgroundThread)

@@ -9,17 +9,28 @@ import com.vanik.betroom.modules.sqllite.DBHelper
 import com.vanik.betroom.proxy.model.Actor
 import com.vanik.betroom.proxy.model.Movie
 import com.vanik.betroom.proxy.model.Pet
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-class Repository(val  actorDao: ActorDao,val movieDao: MovieDao,val dbLite: DBHelper) {
+class Repository(
+    private val actorDao: ActorDao,
+    private val movieDao: MovieDao,
+    private val dbLite: DBHelper
+) {
 
     suspend fun insertActorInRoomDb(actor: Actor) {
-       actorDao.insert(actor)
+        actorDao.insert(actor)
     }
+
+    suspend fun insertMovieInRoomDb(actor: Actor, movie: Movie) {
+        movieDao.insert(movie)
+        actorDao.update(actor)
+    }
+
+    fun getAllActorsFromRoom() = flow { emit(actorDao.getAllActors()) }
+    fun getMoviesFromRoom() = flow { emit(movieDao.getAllMovies()) }
 
     suspend fun insertActorInSqlLiteDb(actor: Actor) {
         val cv = ContentValues()
@@ -29,11 +40,6 @@ class Repository(val  actorDao: ActorDao,val movieDao: MovieDao,val dbLite: DBHe
         val petJson: String = Json.encodeToString(actor.pets)
         cv.put("pets", petJson)
         dbLite.writableDatabase.insert("actor", null, cv)
-    }
-
-    suspend fun insertMovieInRoomDb(actor: Actor, movie: Movie) {
-        movieDao.insert(movie)
-        actorDao.update(actor)
     }
 
     suspend fun insertMovieInSqlLiteDb(actor: Actor, movie: Movie) {
@@ -55,12 +61,8 @@ class Repository(val  actorDao: ActorDao,val movieDao: MovieDao,val dbLite: DBHe
         dbLite.writableDatabase.update("actor", cv, "name= ?", arrayOf(actor.name))
     }
 
-    fun getAllActorsFromRoom(): Flow<List<Actor>> = flow {
-        emit(actorDao.getAllActors())
-    }
-
     @SuppressLint("Recycle")
-    fun getAllActorsFromSqlLite(): Flow<List<Actor>> = flow {
+    fun getAllActorsFromSqlLite() = flow {
         val cursorCourses: Cursor = dbLite.writableDatabase.rawQuery("SELECT * FROM Actor", null)
         val actors = arrayListOf<Actor>()
         if (cursorCourses.moveToFirst()) {
@@ -88,11 +90,7 @@ class Repository(val  actorDao: ActorDao,val movieDao: MovieDao,val dbLite: DBHe
         emit(actors)
     }
 
-    fun getMoviesFromRoom(): Flow<List<Movie>> = flow {
-        emit(movieDao.getAllMovies())
-    }
-
-    fun getMoviesFromSqlLIte(): Flow<List<Movie>> = flow {
+    fun getMoviesFromSqlLIte() = flow {
         val cursorCourses: Cursor = dbLite.writableDatabase.rawQuery("SELECT * FROM Movie", null)
         val movies = arrayListOf<Movie>()
         if (cursorCourses.moveToFirst()) {
