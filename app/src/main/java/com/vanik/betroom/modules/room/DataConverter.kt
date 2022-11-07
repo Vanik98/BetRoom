@@ -1,7 +1,7 @@
-package com.vanik.betroom.db.room
+package com.vanik.betroom.modules.room
 
 import androidx.room.TypeConverter
-import com.vanik.betroom.entity.Pet
+import com.vanik.betroom.proxy.model.Pet
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json

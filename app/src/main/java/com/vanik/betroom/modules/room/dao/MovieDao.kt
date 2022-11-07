@@ -1,11 +1,10 @@
-package com.vanik.betroom.db.room.dao
+package com.vanik.betroom.modules.room.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.vanik.betroom.entity.Movie
+import com.vanik.betroom.proxy.model.Movie
 
 @Dao
 interface MovieDao {

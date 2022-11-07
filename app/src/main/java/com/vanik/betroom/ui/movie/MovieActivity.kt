@@ -4,11 +4,7 @@ import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
@@ -17,17 +13,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.vanik.betroom.R
-import com.vanik.betroom.databinding.ActivityMainBinding
 import com.vanik.betroom.databinding.ActivityMovieBinding
-import com.vanik.betroom.db.repository.Repository
-import com.vanik.betroom.entity.Actor
-import com.vanik.betroom.entity.Movie
-import com.vanik.betroom.ui.main.ActorAdapter
+import com.vanik.betroom.proxy.model.Actor
+import com.vanik.betroom.proxy.model.Movie
 import kotlinx.coroutines.launch
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import org.w3c.dom.Text
 
 class MovieActivity : AppCompatActivity() {
     private lateinit var movieViewModel: MovieViewModel

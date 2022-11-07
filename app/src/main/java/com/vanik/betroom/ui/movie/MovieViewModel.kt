@@ -1,12 +1,11 @@
 package com.vanik.betroom.ui.movie
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
-import com.vanik.betroom.db.repository.*
-import com.vanik.betroom.entity.Actor
-import com.vanik.betroom.entity.Movie
-import kotlinx.coroutines.Dispatchers
+import com.vanik.betroom.proxy.model.Actor
+import com.vanik.betroom.proxy.model.Movie
+import com.vanik.betroom.ui.AddMovieUseCase
+import com.vanik.betroom.ui.GetMovieUseCase
 import kotlinx.coroutines.launch
 
 class MovieViewModel : ViewModel() {

@@ -5,7 +5,7 @@
     <data>
         <variable
             name="actor"
-            type="com.vanik.betroom.entity.Actor" />
+            type="com.vanik.betroom.proxy.model.Actor" />
     </data>
 <androidx.appcompat.widget.LinearLayoutCompat
     android:layout_width="match_parent"

@@ -1,8 +1,7 @@
-package com.vanik.betroom.db.room.dao
+package com.vanik.betroom.modules.room.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.vanik.betroom.entity.Actor
+import com.vanik.betroom.proxy.model.Actor
 
 @Dao
 interface ActorDao {

@@ -1,13 +1,10 @@
 package com.vanik.betroom.ui.movie
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.vanik.betroom.R
 import com.vanik.betroom.databinding.ItemMovieBinding
-import com.vanik.betroom.entity.Movie
+import com.vanik.betroom.proxy.model.Movie
 
 class MovieAdapter(var movies: List<Movie>) : RecyclerView.Adapter<MovieAdapter.MovieHolder>() {
 

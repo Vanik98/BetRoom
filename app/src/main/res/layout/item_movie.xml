@@ -5,7 +5,7 @@
     <data>
         <variable
             name="movie"
-            type="com.vanik.betroom.entity.Movie" />
+            type="com.vanik.betroom.proxy.model.Movie" />
     </data>
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"

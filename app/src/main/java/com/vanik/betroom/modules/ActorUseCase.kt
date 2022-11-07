@@ -1,6 +1,7 @@
-package com.vanik.betroom.db.repository
+package com.vanik.betroom.ui
 
-import com.vanik.betroom.entity.Actor
+import com.vanik.betroom.modules.repository.Repository
+import com.vanik.betroom.proxy.model.Actor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext

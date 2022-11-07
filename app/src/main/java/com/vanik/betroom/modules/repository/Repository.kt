@@ -1,20 +1,17 @@
-package com.vanik.betroom.db.repository
+package com.vanik.betroom.modules.repository
 
 import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
-import com.vanik.betroom.db.room.AppDatabase
-import com.vanik.betroom.db.sqllite.DBHelper
-import com.vanik.betroom.entity.Actor
-import com.vanik.betroom.entity.Movie
-import com.vanik.betroom.entity.Pet
-import kotlinx.coroutines.Dispatchers
+import com.vanik.betroom.modules.room.AppDatabase
+import com.vanik.betroom.modules.sqllite.DBHelper
+import com.vanik.betroom.proxy.model.Actor
+import com.vanik.betroom.proxy.model.Movie
+import com.vanik.betroom.proxy.model.Pet
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.withContext
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json

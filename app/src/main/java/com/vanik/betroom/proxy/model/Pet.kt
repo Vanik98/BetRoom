@@ -1,4 +1,4 @@
-package com.vanik.betroom.entity
+package com.vanik.betroom.proxy.model
 
 import androidx.room.PrimaryKey
 

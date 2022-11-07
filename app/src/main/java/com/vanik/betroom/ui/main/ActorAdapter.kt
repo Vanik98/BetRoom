@@ -4,12 +4,9 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.vanik.betroom.R
 import com.vanik.betroom.databinding.ItemActorBinding
-import com.vanik.betroom.entity.Actor
+import com.vanik.betroom.proxy.model.Actor
 
 class ActorAdapter(
     var actors: List<Actor>,

@@ -1,10 +1,8 @@
-package com.vanik.betroom.db.sqllite
+package com.vanik.betroom.modules.sqllite
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import androidx.room.Room
-import com.vanik.betroom.db.room.AppDatabase
 
 class DBHelper private constructor(context: Context) : SQLiteOpenHelper(context,"database_lite",null,1) {
     override fun onCreate(db: SQLiteDatabase) {
