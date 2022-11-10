@@ -16,7 +16,9 @@ class DBHelper (context: Context) : SQLiteOpenHelper(context,"database_lite",nul
         db.execSQL("create table Movie ("
                 + "id integer primary key NOT NULL,"
                 + "name text NOT NULL,"
-                + "imdbRate real NOT NULL" + ");")
+                + "actorName text NOT NULL,"
+                + " FOREIGN KEY (actorName) REFERENCES Actor(name) "
+                + ");")
     }
 
     override fun onUpgrade(p0: SQLiteDatabase?, p1: Int, p2: Int) {
