@@ -10,36 +10,38 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:background="@color/purple_200"
-    android:layout_height="50dp">
+    android:layout_marginTop="10dp"
+    android:layout_height="42dp"
+    >
 
     <TextView
         android:id="@+id/movieItemIdTextView"
-        android:layout_width="97dp"
-        android:layout_height="27dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="100dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
         android:text="@{``+movie.id}"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/movieItemNameTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="12dp"
+        android:layout_width="100dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="10dp"
         android:text="@{movie.name}"
         app:layout_constraintStart_toEndOf="@+id/movieItemIdTextView"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/movieItemImdbRateTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_width="100dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="10dp"
         android:text="@{Double.toString(movie.imdbRate)}"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.54"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/movieItemNameTextView"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

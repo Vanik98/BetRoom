@@ -58,6 +58,7 @@ class MovieActivity : BaseActivity() {
     @SuppressLint("SetTextI18n")
     private fun setPetsViews() {
         if (actor.pets != null) {
+            binding.moviePet.visibility  = View.VISIBLE
             binding.moviePetLayout1.visibility = View.VISIBLE
             binding.moviePetNameTextView1.text = actor.pets!![0]!!.name
             binding.moviePetAgeTextView1.text = actor.pets!![0]!!.age.toString()
