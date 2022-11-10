@@ -13,37 +13,30 @@ import com.vanik.betroom.R
 import com.vanik.betroom.databinding.ActivityMainBinding
 import com.vanik.betroom.proxy.model.Actor
 import com.vanik.betroom.proxy.model.Pet
+import com.vanik.betroom.ui.base.BaseActivity
 import com.vanik.betroom.ui.movie.MovieActivity
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var actorAdapter: ActorAdapter
-    private lateinit var dialog: Dialog
     private var isRoom = true
     private val mainViewModel: MainViewModel by viewModel<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         mainViewModel.fetchData()
-        setupViews()
         showDbActors()
         chooseRoomOrLite()
         addActor()
     }
 
-    private fun setupViews() {
-        initDialog()
+    override fun setUpViews() {
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         initAdapter()
-    }
-
-    private fun initDialog() {
-        dialog = Dialog(this, android.R.style.Theme_DeviceDefault_Light_NoActionBar_Fullscreen)
-        dialog.setContentView(R.layout.dialog_layout)
     }
 
     private fun initAdapter() {
@@ -73,10 +66,10 @@ class MainActivity : AppCompatActivity() {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun showDbActors() {
-        dialog.show()
+        showDialog()
         mainViewModel.actorsLiveData.observe(this) {
-            dialog.dismiss()
             actorAdapter.notifyDataSetChanged()
+            closeDialog()
         }
     }
 
@@ -131,7 +124,5 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-    }
+
 }
