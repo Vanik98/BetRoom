@@ -11,26 +11,44 @@ import com.vanik.betroom.modules.sqllite.DBHelper
 import com.vanik.betroom.ui.main.MainViewModel
 import com.vanik.betroom.ui.movie.MovieViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.module.Module
 import org.koin.dsl.module
 
-val repositoryModule = module {
-    single { DBHelper(get()) }
-    single { Room.databaseBuilder(get(), AppDatabase::class.java, "database_room").build() }
-    single { get<AppDatabase>().ActorDao() }
-    single { get<AppDatabase>().MovieDao() }
-    single { Repository(get(), get(), get()) }
+val appModules by lazy {
+    listOf(
+        viewModelModule,
+        movieUseCaseModule,
+        actorUseCaseModule,
+        repositoryModule,
+        roomModule,
+        sqlLiteModule
+    )
 }
 
-val actorModule = module {
+val viewModelModule = module {
+    viewModel { MainViewModel(get(), get()) }
+    viewModel { MovieViewModel(get(), get()) }
+}
+
+val actorUseCaseModule = module {
     single { AddActorUseCase(get()) }
     single { GetActorUseCase(get()) }
 }
 
-val movieModule = module {
+val movieUseCaseModule = module {
     single { AddMovieUseCase(get()) }
     single { GetMovieUseCase(get()) }
 }
 
-val mainViewModelModule = module { viewModel { MainViewModel(get(), get()) } }
+val repositoryModule = module { single { Repository(get(), get(), get()) } }
 
-val movieViewModelModule = module { viewModel { MovieViewModel(get(), get()) } }
+val roomModule = module {
+    single { Room.databaseBuilder(get(), AppDatabase::class.java, "database_room").build() }
+    single { get<AppDatabase>().ActorDao() }
+    single { get<AppDatabase>().MovieDao() }
+}
+
+val sqlLiteModule = module { single { DBHelper(get()) } }
+
+
+

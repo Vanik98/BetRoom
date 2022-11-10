@@ -13,15 +13,7 @@ class GrowApp : Application() {
         startKoin {
             androidLogger(Level.DEBUG)
             androidContext(this@GrowApp)
-            modules(
-                listOf(
-                    repositoryModule,
-                    mainViewModelModule,
-                    movieViewModelModule,
-                    actorModule,
-                    movieModule
-                )
-            )
+            modules(appModules)
         }
     }
 }

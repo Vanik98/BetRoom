@@ -19,7 +19,6 @@ class Repository(
     private val movieDao: MovieDao,
     private val dbLite: DBHelper
 ) {
-
     suspend fun insertActorInRoomDb(actor: Actor) {
         actorDao.insert(actor)
     }
