@@ -15,13 +15,14 @@ import com.vanik.betroom.R
 import com.vanik.betroom.databinding.ActivityMovieBinding
 import com.vanik.betroom.proxy.model.Actor
 import com.vanik.betroom.proxy.model.Movie
+import com.vanik.betroom.ui.base.BaseActivity
 import kotlinx.coroutines.launch
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MovieActivity : AppCompatActivity() {
+class MovieActivity : BaseActivity() {
     private val movieViewModel: MovieViewModel by viewModel<MovieViewModel>()
     private lateinit var binding: ActivityMovieBinding
     private lateinit var actor: Actor
@@ -29,11 +30,14 @@ class MovieActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_movie)
-        initialiseAdapter()
         showActor()
         lifecycleScope.launch { showDbMovies() }
         addMovie()
+    }
+
+    override fun setUpViews() {
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_movie)
+        initialiseAdapter()
     }
 
     private fun initialiseAdapter() {
@@ -129,7 +133,4 @@ class MovieActivity : AppCompatActivity() {
             }
     }
 
-    private fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-    }
 }
