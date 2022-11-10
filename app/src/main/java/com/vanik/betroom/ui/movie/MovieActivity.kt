@@ -74,7 +74,7 @@ class MovieActivity : AppCompatActivity() {
         val id = binding.movieIdEditText.text.toString()
         var movie: Movie? = null
         if (id.isNotEmpty() && name.isNotEmpty() && imdbRate.isNotEmpty()) {
-            movie = Movie(id.toInt(), name, imdbRate.toDouble())
+            movie = Movie(id.toInt(), name, imdbRate.toDouble(),actor.name)
         } else {
             showToast("fill all fields")
         }
