@@ -17,7 +17,7 @@ class DBHelper (context: Context) : SQLiteOpenHelper(context,"database_lite",nul
                 + "id integer primary key NOT NULL,"
                 + "name text NOT NULL,"
                 + "imdbRate real NOT NULL,"
-                + "actorName text primary key NOT NULL,"
+                + "actorName text NOT NULL,"
                 + "FOREIGN KEY (actorName) REFERENCES Actor(name)"
                 + ");")
     }
