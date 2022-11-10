@@ -1,17 +1,16 @@
-package com.vanik.betroom.modules.di
+package com.vanik.betroom.data.modules.di
 
 import androidx.room.Room
-import com.vanik.betroom.modules.AddActorUseCase
-import com.vanik.betroom.modules.AddMovieUseCase
-import com.vanik.betroom.modules.GetActorUseCase
-import com.vanik.betroom.modules.GetMovieUseCase
-import com.vanik.betroom.modules.repository.Repository
-import com.vanik.betroom.modules.room.AppDatabase
-import com.vanik.betroom.modules.sqllite.DBHelper
+import com.vanik.betroom.data.modules.repository.Repository
+import com.vanik.betroom.data.modules.room.AppDatabase
+import com.vanik.betroom.data.modules.sqllite.DBHelper
+import com.vanik.betroom.domain.usecase.AddActorUseCase
+import com.vanik.betroom.domain.usecase.AddMovieUseCase
+import com.vanik.betroom.domain.usecase.GetActorUseCase
+import com.vanik.betroom.domain.usecase.GetMovieUseCase
 import com.vanik.betroom.ui.main.MainViewModel
 import com.vanik.betroom.ui.movie.MovieViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.core.module.Module
 import org.koin.dsl.module
 
 val appModules by lazy {

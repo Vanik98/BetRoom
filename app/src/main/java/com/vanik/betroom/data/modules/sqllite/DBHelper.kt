@@ -1,4 +1,4 @@
-package com.vanik.betroom.modules.sqllite
+package com.vanik.betroom.data.modules.sqllite
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase

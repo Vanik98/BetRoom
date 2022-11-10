@@ -1,12 +1,12 @@
-package com.vanik.betroom.modules.room
+package com.vanik.betroom.data.modules.room
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.vanik.betroom.modules.room.dao.ActorDao
-import com.vanik.betroom.modules.room.dao.MovieDao
-import com.vanik.betroom.proxy.model.Actor
-import com.vanik.betroom.proxy.model.Movie
+import com.vanik.betroom.data.modules.room.dao.ActorDao
+import com.vanik.betroom.data.modules.room.dao.MovieDao
+import com.vanik.betroom.data.model.Actor
+import com.vanik.betroom.data.model.Movie
 
 @Database(entities = [Actor::class, Movie::class], version = 1)
 @TypeConverters(DataConverter::class)

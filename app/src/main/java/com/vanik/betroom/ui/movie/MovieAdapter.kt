@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.vanik.betroom.databinding.ItemMovieBinding
-import com.vanik.betroom.proxy.model.Movie
+import com.vanik.betroom.data.model.Movie
 
 class MovieAdapter(var movies: List<Movie>) : RecyclerView.Adapter<MovieAdapter.MovieHolder>() {
 

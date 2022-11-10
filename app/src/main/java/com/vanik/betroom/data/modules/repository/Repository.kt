@@ -1,14 +1,14 @@
-package com.vanik.betroom.modules.repository
+package com.vanik.betroom.data.modules.repository
 
 import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.database.Cursor
-import com.vanik.betroom.modules.room.dao.ActorDao
-import com.vanik.betroom.modules.room.dao.MovieDao
-import com.vanik.betroom.modules.sqllite.DBHelper
-import com.vanik.betroom.proxy.model.Actor
-import com.vanik.betroom.proxy.model.Movie
-import com.vanik.betroom.proxy.model.Pet
+import com.vanik.betroom.data.modules.room.dao.ActorDao
+import com.vanik.betroom.data.modules.room.dao.MovieDao
+import com.vanik.betroom.data.modules.sqllite.DBHelper
+import com.vanik.betroom.data.model.Actor
+import com.vanik.betroom.data.model.Movie
+import com.vanik.betroom.data.model.Pet
 import kotlinx.coroutines.flow.flow
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString

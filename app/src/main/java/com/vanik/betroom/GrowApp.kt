@@ -1,6 +1,7 @@
 package com.vanik.betroom
 
 import android.app.Application
+import com.vanik.betroom.data.modules.di.appModules
 import com.vanik.betroom.modules.di.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger

@@ -1,18 +1,15 @@
 package com.vanik.betroom.ui.main
 
 import android.annotation.SuppressLint
-import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.vanik.betroom.R
 import com.vanik.betroom.databinding.ActivityMainBinding
-import com.vanik.betroom.proxy.model.Actor
-import com.vanik.betroom.proxy.model.Pet
+import com.vanik.betroom.data.model.Actor
+import com.vanik.betroom.data.model.Pet
 import com.vanik.betroom.ui.base.BaseActivity
 import com.vanik.betroom.ui.movie.MovieActivity
 import kotlinx.serialization.encodeToString

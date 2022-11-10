@@ -1,9 +1,8 @@
-package com.vanik.betroom.proxy.model
+package com.vanik.betroom.data.model
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import kotlinx.serialization.Serializable
 
 @kotlinx.serialization.Serializable
 @Entity(
