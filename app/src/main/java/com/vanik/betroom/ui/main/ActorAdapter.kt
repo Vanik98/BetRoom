@@ -28,12 +28,12 @@ class ActorAdapter(
 
         fun bind(actor: Actor) {
             binding.actor = actor
-            badCodeSetPetsInViews(actor)
+            setPetsInViews(actor)
             binding.root.setOnClickListener { onClick.invoke(actor) }
         }
 
         @SuppressLint("SetTextI18n")
-        private fun badCodeSetPetsInViews(actor: Actor) {
+        private fun setPetsInViews(actor: Actor) {
             binding.actorItemPetLayout1.visibility = View.GONE
             binding.actorItemPetLayout2.visibility = View.GONE
             if (actor.pets != null) {

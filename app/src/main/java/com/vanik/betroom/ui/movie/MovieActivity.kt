@@ -48,12 +48,13 @@ class MovieActivity : AppCompatActivity() {
         val actorJson: String = intent.getStringExtra("actor").toString()
         actor = Json.decodeFromString(actorJson)
         binding.actor = actor
-        badCodeSetPetsViews()
+        setPetsViews()
         val movieIdsJson = Json.encodeToString(actor.movieIds)
         binding.movieIdsInActorTextView.text = movieIdsJson
     }
 
-    private fun badCodeSetPetsViews() {
+    @SuppressLint("SetTextI18n")
+    private fun setPetsViews() {
         if (actor.pets != null) {
             binding.moviePetLayout1.visibility = View.VISIBLE
             binding.moviePetNameTextView1.text = actor.pets!![0]!!.name
