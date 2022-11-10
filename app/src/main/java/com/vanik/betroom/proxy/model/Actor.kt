@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 @Entity
 data class Actor(
     @PrimaryKey
-    val name :String,
+    var name :String,
     val surname : String,
     var age :Int,
     val pets : List<Pet?>?,

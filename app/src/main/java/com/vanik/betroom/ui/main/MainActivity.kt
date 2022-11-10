@@ -86,6 +86,9 @@ class MainActivity : AppCompatActivity() {
             val actor = createActorFromViews()
             if (actor != null) {
                 mainViewModel.insertActor(isRoom,actor)
+                if(!mainViewModel.insertOk){
+                    showToast("this name is already in the database")
+                }
             }
         }
     }
@@ -115,11 +118,7 @@ class MainActivity : AppCompatActivity() {
             if ((petName2.isNotEmpty() && petAge2.isNotEmpty())) {
                 val pet2 = Pet(0, petName2, petAge2.toInt(), binding.mainPetCheckBox2.isChecked)
                 pets.add(pet2)
-            } else {
-                showToast("actor is added but pet2 is not added")
             }
-        } else {
-            showToast("actor is added but pet1 is not added")
         }
         return pets
     }

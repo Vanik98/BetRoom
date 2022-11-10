@@ -86,13 +86,32 @@ class MovieActivity : AppCompatActivity() {
         binding.movieAddButton.setOnClickListener {
             val movie = createMovieFromViews()
             if (movie != null) {
-                if (actor.movieIds == null) { actor.movieIds = arrayListOf() }
-                (actor.movieIds as ArrayList<Int>).add(movie.id)
-                movieViewModel.insertMovie(actor, movie)
-                (adapter.movies as ArrayList<Movie>).add(0, movie)
-                val movieIdsJson = Json.encodeToString(actor.movieIds)
-                binding.movieIdsInActorTextView.text = movieIdsJson
-                adapter.notifyDataSetChanged()
+                if (actor.movieIds!!.isEmpty()) {
+                    (actor.movieIds as ArrayList<Int>).add(movie.id)
+                    movieViewModel.insertMovie(actor, movie)
+                    (adapter.movies as ArrayList<Movie>).add(0, movie)
+                    val movieIdsJson = Json.encodeToString(actor.movieIds)
+                    binding.movieIdsInActorTextView.text = movieIdsJson
+                    adapter.notifyDataSetChanged()
+                }else{
+                    var insertOk = true
+                        for (i in 0 until actor.movieIds!!.size){
+                            if(actor.movieIds!![i] == movie.id) {
+                                insertOk = false
+                            }
+                        }
+                    if(insertOk) {
+                        (actor.movieIds as ArrayList<Int>).add(movie.id)
+                        movieViewModel.insertMovie(actor, movie)
+                        (adapter.movies as ArrayList<Movie>).add(0, movie)
+                        val movieIdsJson = Json.encodeToString(actor.movieIds)
+                        binding.movieIdsInActorTextView.text = movieIdsJson
+                        adapter.notifyDataSetChanged()
+                    }else{
+                        showToast("this id is already in the database")
+                    }
+                }
+
             }
         }
     }

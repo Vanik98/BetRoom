@@ -16,6 +16,7 @@ class MainViewModel(
     var actors = arrayListOf<Actor>()
     private val actorsRoom = arrayListOf<Actor>()
     private val actorsSqlLite = arrayListOf<Actor>()
+    var insertOk = true
 
     fun fetchData() {
         fetchAllRoomActors()
@@ -41,18 +42,25 @@ class MainViewModel(
     }
 
     fun insertActor(isRoom: Boolean, actor: Actor) = viewModelScope.launch {
-        when (isRoom) {
-            true -> {
-                addActorUseCase.executeInRoom(actor)
-                actorsRoom.add(0, actor)
-            }
-            false -> {
-                addActorUseCase.executeInSqlLite(actor)
-                actorsSqlLite.add(0, actor)
+        for (i in actors){
+            if(i.name == actor.name){
+                 insertOk = false
             }
         }
-        actors.add(0, actor)
-        actorsLiveData.value = actors
+        if(insertOk) {
+            when (isRoom) {
+                true -> {
+                    addActorUseCase.executeInRoom(actor)
+                    actorsRoom.add(0, actor)
+                }
+                false -> {
+                    addActorUseCase.executeInSqlLite(actor)
+                    actorsSqlLite.add(0, actor)
+                }
+            }
+            actors.add(0, actor)
+            actorsLiveData.value = actors
+        }
     }
 
     fun chooseDb(isRoom: Boolean) {
