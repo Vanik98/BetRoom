@@ -8,9 +8,9 @@ interface ActorDao {
     @Query("SELECT * FROM Actor")
     suspend fun getAllActors(): List<Actor>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(actor: Actor)
 
-    @Update
+    @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun update(actor: Actor)
 }

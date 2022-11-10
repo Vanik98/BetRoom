@@ -24,7 +24,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class MovieActivity : AppCompatActivity() {
     private val movieViewModel: MovieViewModel by viewModel<MovieViewModel>()
     private lateinit var binding: ActivityMovieBinding
-    private lateinit var actor: Actor
     private lateinit var adapter: MovieAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,24 +45,24 @@ class MovieActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     private fun showActor() {
         val actorJson: String = intent.getStringExtra("actor").toString()
-        actor = Json.decodeFromString(actorJson)
-        binding.actor = actor
+        movieViewModel.actor = Json.decodeFromString(actorJson)
+        binding.actor = movieViewModel.actor
         badCodeSetPetsViews()
-        val movieIdsJson = Json.encodeToString(actor.movieIds)
+        val movieIdsJson = Json.encodeToString(movieViewModel.actor.movieIds)
         binding.movieIdsInActorTextView.text = movieIdsJson
     }
 
     private fun badCodeSetPetsViews() {
-        if (actor.pets != null) {
+        if (movieViewModel.actor.pets != null) {
             binding.moviePetLayout1.visibility = View.VISIBLE
-            binding.moviePetNameTextView1.text = actor.pets!![0]!!.name
-            binding.moviePetAgeTextView1.text = actor.pets!![0]!!.age.toString()
-            binding.moviePetIsSmartTextView1.text = "isSmart ? ${actor.pets!![0]!!.isSmart}"
-            if (actor.pets!!.size == 2) {
+            binding.moviePetNameTextView1.text = movieViewModel.actor.pets!![0]!!.name
+            binding.moviePetAgeTextView1.text = movieViewModel.actor.pets!![0]!!.age.toString()
+            binding.moviePetIsSmartTextView1.text = "isSmart ? ${movieViewModel.actor.pets!![0]!!.isSmart}"
+            if (movieViewModel.actor.pets!!.size == 2) {
                 binding.moviePetLayout2.visibility = View.VISIBLE
-                binding.moviePetNameTextView2.text = actor.pets!![1]!!.name
-                binding.moviePetAgeTextView2.text = actor.pets!![1]!!.age.toString()
-                binding.moviePetIsSmartTextView2.text = "isSmart ? ${actor.pets!![1]!!.isSmart}"
+                binding.moviePetNameTextView2.text = movieViewModel.actor.pets!![1]!!.name
+                binding.moviePetAgeTextView2.text = movieViewModel.actor.pets!![1]!!.age.toString()
+                binding.moviePetIsSmartTextView2.text = "isSmart ? ${movieViewModel.actor.pets!![1]!!.isSmart}"
             }
         }
     }
@@ -74,7 +73,7 @@ class MovieActivity : AppCompatActivity() {
         val id = binding.movieIdEditText.text.toString()
         var movie: Movie? = null
         if (id.isNotEmpty() && name.isNotEmpty() && imdbRate.isNotEmpty()) {
-            movie = Movie(id.toInt(), name, imdbRate.toDouble(),actor.name)
+            movie = Movie(id.toInt(), name, imdbRate.toDouble(),movieViewModel.actor.name)
         } else {
             showToast("fill all fields")
         }
@@ -86,11 +85,8 @@ class MovieActivity : AppCompatActivity() {
         binding.movieAddButton.setOnClickListener {
             val movie = createMovieFromViews()
             if (movie != null) {
-                if (actor.movieIds == null) { actor.movieIds = arrayListOf() }
-                (actor.movieIds as ArrayList<Int>).add(movie.id)
-                movieViewModel.insertMovie(actor, movie)
-                (adapter.movies as ArrayList<Movie>).add(0, movie)
-                val movieIdsJson = Json.encodeToString(actor.movieIds)
+                movieViewModel.insertMovie(movieViewModel.actor, movie)
+                val movieIdsJson = Json.encodeToString(movieViewModel.actor.movieIds)
                 binding.movieIdsInActorTextView.text = movieIdsJson
                 adapter.notifyDataSetChanged()
             }

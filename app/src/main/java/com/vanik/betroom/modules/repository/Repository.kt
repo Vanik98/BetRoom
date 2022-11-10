@@ -24,9 +24,17 @@ class Repository(
         actorDao.insert(actor)
     }
 
-    suspend fun insertMovieInRoomDb(actor: Actor, movie: Movie) {
-        movieDao.insert(movie)
-        actorDao.update(actor)
+    suspend fun insertMovieInRoomDb(actor: Actor, movie: Movie) : Boolean {
+        var insertIsSuccess = false
+        insertIsSuccess = try {
+            movieDao.insert(movie)
+            actorDao.update(actor)
+            true
+
+        } catch (e: java.lang.Exception) {
+            false
+        }
+        return insertIsSuccess
     }
 
     fun getAllActorsFromRoom() = flow { emit(actorDao.getAllActors()) }
@@ -42,24 +50,29 @@ class Repository(
         dbLite.writableDatabase.insert("actor", null, cv)
     }
 
-    suspend fun insertMovieInSqlLiteDb(actor: Actor, movie: Movie) {
+    suspend fun insertMovieInSqlLiteDb(actor: Actor, movie: Movie) : Boolean {
         //movie insert
         var cv = ContentValues()
         cv.put("id", movie.id)
         cv.put("name", movie.name)
         cv.put("imdbRate", movie.imdbRate)
         cv.put("actorName", actor.name)
-        dbLite.writableDatabase.insertOrThrow("movie", null, cv)
-        //actor update
-        cv = ContentValues()
-        cv.put("name", actor.name)
-        cv.put("surname", actor.surname)
-        cv.put("age", actor.age)
-        val petJson: String = Json.encodeToString(actor.pets)
-        cv.put("pets", petJson)
-        val movieIdsJson: String = Json.encodeToString(actor.movieIds)
-        cv.put("movieIds", movieIdsJson)
-        dbLite.writableDatabase.update("actor", cv, "name= ?", arrayOf(actor.name))
+        val i = dbLite.writableDatabase.insertOrThrow("movie", null, cv)
+        if (i.toInt() != -1) {
+            //actor update
+            cv = ContentValues()
+            cv.put("name", actor.name)
+            cv.put("surname", actor.surname)
+            cv.put("age", actor.age)
+            val petJson: String = Json.encodeToString(actor.pets)
+            cv.put("pets", petJson)
+            val movieIdsJson: String = Json.encodeToString(actor.movieIds)
+            cv.put("movieIds", movieIdsJson)
+            dbLite.writableDatabase.update("actor", cv, "name= ?", arrayOf(actor.name))
+            return true
+        }else{
+            return false
+        }
     }
 
     @SuppressLint("Recycle")

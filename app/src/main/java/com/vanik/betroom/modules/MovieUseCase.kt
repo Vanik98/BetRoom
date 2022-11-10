@@ -6,6 +6,7 @@ import com.vanik.betroom.proxy.model.Movie
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
+import java.util.function.BiPredicate
 
 private val backgroundThread = Dispatchers.IO
 
@@ -16,20 +17,23 @@ class GetMovieUseCase(private val repository: Repository) {
 }
 
 class AddMovieUseCase(private val repository: Repository) {
-    suspend fun executeInRoom(actor: Actor, movie: Movie) = withContext(backgroundThread) {
+    suspend fun executeInRoom(actor: Actor, movie: Movie) : Boolean {
+        var insertIsSuccess= false
         try {
-            repository.insertMovieInRoomDb(actor, movie)
+            insertIsSuccess = repository.insertMovieInRoomDb(actor, movie)
         } catch (e: java.lang.Exception) {
 
         }
-
+            return insertIsSuccess
     }
 
-    suspend fun executeInSqlLite(actor: Actor, movie: Movie) = withContext(backgroundThread) {
+    suspend fun executeInSqlLite(actor: Actor, movie: Movie) : Boolean {
+        var insertIsSuccess= false
         try {
-            repository.insertMovieInSqlLiteDb(actor, movie)
+            insertIsSuccess =  repository.insertMovieInSqlLiteDb(actor, movie)
         } catch (e: java.lang.Exception) {
 
         }
+        return insertIsSuccess
     }
 }

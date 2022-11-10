@@ -41,13 +41,12 @@ class MainViewModel(
     }
 
     fun insertActor(isRoom: Boolean, actor: Actor) = viewModelScope.launch {
+
         when (isRoom) {
             true -> {
-                addActorUseCase.executeInRoom(actor)
                 actorsRoom.add(0, actor)
             }
             false -> {
-                addActorUseCase.executeInSqlLite(actor)
                 actorsSqlLite.add(0, actor)
             }
         }
