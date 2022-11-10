@@ -49,7 +49,7 @@ class Repository(
         cv.put("name", movie.name)
         cv.put("imdbRate", movie.imdbRate)
         cv.put("actorName", actor.name)
-        dbLite.writableDatabase.insert("movie", null, cv)
+        dbLite.writableDatabase.insertOrThrow("movie", null, cv)
         //actor update
         cv = ContentValues()
         cv.put("name", actor.name)
