@@ -120,7 +120,4 @@ class MainActivity : BaseActivity() {
         intent.putExtra("actor", Json.encodeToString(actor))
         startActivity(intent)
     }
-
-
-
 }
