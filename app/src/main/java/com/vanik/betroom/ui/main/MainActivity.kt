@@ -33,10 +33,10 @@ class MainActivity : BaseActivity() {
 
     override fun setUpViews() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        initAdapter()
+        initializeAdapter()
     }
 
-    private fun initAdapter() {
+    private fun initializeAdapter() {
         val actorRecyclerView: RecyclerView = findViewById(R.id.mainActorRecyclerView)
         actorRecyclerView.layoutManager = LinearLayoutManager(this)
         actorRecyclerView.adapter = ActorAdapter(mainViewModel.actors) { openMovieActivity(it) }
