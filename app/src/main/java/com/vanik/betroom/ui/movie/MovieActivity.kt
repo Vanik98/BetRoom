@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.vanik.betroom.R
 import com.vanik.betroom.databinding.ActivityMovieBinding
-import com.vanik.betroom.data.model.Actor
-import com.vanik.betroom.data.model.Movie
+import com.vanik.growdb.model.Actor
+import com.vanik.growdb.model.Movie
 import com.vanik.betroom.ui.base.BaseActivity
 import kotlinx.coroutines.launch
 import kotlinx.serialization.decodeFromString

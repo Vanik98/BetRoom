@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.vanik.betroom.databinding.ItemActorBinding
-import com.vanik.betroom.data.model.Actor
+import com.vanik.growdb.model.Actor
 
 class ActorAdapter(
     var actors: List<Actor>,
@@ -38,15 +38,15 @@ class ActorAdapter(
             binding.actorItemPetLayout2.visibility = View.GONE
             if (actor.pets != null) {
                 binding.actorItemPetLayout1.visibility = View.VISIBLE
-                binding.actorItemPetNameTextView1.text = actor.pets[0]!!.name
-                binding.actorItemPetAgeTextView1.text = actor.pets[0]!!.age.toString()
-                binding.actorItemPetIsSmartTextView1.text = "isSmart ? ${actor.pets[0]!!.isSmart}"
-                if (actor.pets.size == 2) {
+                binding.actorItemPetNameTextView1.text = actor.pets!![0]!!.name
+                binding.actorItemPetAgeTextView1.text = actor.pets!![0]!!.age.toString()
+                binding.actorItemPetIsSmartTextView1.text = "isSmart ? ${actor.pets!![0]!!.isSmart}"
+                if (actor.pets!!.size == 2) {
                     binding.actorItemPetLayout2.visibility = View.VISIBLE
-                    binding.actorItemPetNameTextView2.text = actor.pets[1]!!.name
-                    binding.actorItemPetAgeTextView2.text = actor.pets[1]!!.age.toString()
+                    binding.actorItemPetNameTextView2.text = actor.pets!![1]!!.name
+                    binding.actorItemPetAgeTextView2.text = actor.pets!![1]!!.age.toString()
                     binding.actorItemPetIsSmartTextView2.text =
-                        "isSmart ? ${actor.pets[1]!!.isSmart}"
+                        "isSmart ? ${actor.pets!![1]!!.isSmart}"
                 }
             }
         }

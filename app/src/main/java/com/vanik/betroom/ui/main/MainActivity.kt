@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.vanik.betroom.R
 import com.vanik.betroom.databinding.ActivityMainBinding
-import com.vanik.betroom.data.model.Actor
-import com.vanik.betroom.data.model.Pet
+import com.vanik.growdb.model.Actor
+import com.vanik.growdb.model.Pet
 import com.vanik.betroom.ui.base.BaseActivity
 import com.vanik.betroom.ui.movie.MovieActivity
 import kotlinx.serialization.encodeToString

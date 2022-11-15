@@ -6,7 +6,7 @@
     <data>
         <variable
             name="actor"
-            type="com.vanik.betroom.data.model.Actor" />
+            type="com.vanik.growdb.model.Actor" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -1,4 +1,4 @@
-package com.vanik.betroom.data.model
+package com.vanik.growdb.model
 
 import androidx.room.Entity
 import androidx.room.ForeignKey

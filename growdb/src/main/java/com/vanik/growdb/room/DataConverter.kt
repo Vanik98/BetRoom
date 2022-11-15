@@ -1,7 +1,7 @@
-package com.vanik.betroom.data.modules.room
+package com.vanik.growdb.room
 
 import androidx.room.TypeConverter
-import com.vanik.betroom.data.model.Pet
+import com.vanik.growdb.model.Pet
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json

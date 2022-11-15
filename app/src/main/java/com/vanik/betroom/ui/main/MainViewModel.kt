@@ -3,7 +3,7 @@ package com.vanik.betroom.ui.main
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.vanik.betroom.data.model.Actor
+import com.vanik.growdb.model.Actor
 import com.vanik.betroom.domain.usecase.AddActorUseCase
 import com.vanik.betroom.domain.usecase.GetActorUseCase
 import kotlinx.coroutines.launch
