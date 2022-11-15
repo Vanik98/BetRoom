@@ -1,62 +1,63 @@
 ext {
-
-    versionOfName = '1.0'
-    versionOfCode = 1
-
     versionOfCompileSdk = 32
     versionOfMinSdk = 21
-    versionOfTargetSdk = 31
+    versionOfTargetSdk = 32
+    versionOfCode = 1
+    versionOfName = '1.0'
     versionOfBuildTools = '30.0.2'
 
     versions = [
-            "kotlinVersion"             : '1.7.0',
-            "googleServicesVersion"     : '4.3.4',
-            "coreVersion"               : '1.7.0',
-            "navigationVersion"         : '2.3.2',
-            "androidGradlePluginVersion": '4.1.0',
+            //Kotlin
+            "coreVersion"                  : '1.7.0',
             //UI
-            "appCompatVersion"          : '1.5.1',
-            "materialVersion"           : '1.5.1',
-            "constraintLayoutVersion"   : '2.1.4',
-            // Koin
-            "koinVersion"               : '2.1.6',
-            //coroutine
-            "coroutinesVersion"         : '1.6.1'
+            "appCompatVersion"             : '1.5.1',
+            "materialVersion"              : '1.7.0',
+            "constraintLayoutVersion"      : '2.1.4',
+            //Koin
+            "koinVersion"                  : '3.2.2',
+            "koinAndroidVersion"           : '3.3.0',
+            //Coroutine
+            "coroutinesVersion"            : '1.6.1',
+            //Serialization
+            "serializationVersion"         : '1.2.1',
+            //ArchitectureComponents
+            "architectureComponentsVersion": '2.5.1',
+            //Room
+            "roomVersion"                  : '2.4.3'
     ]
 
-    classpathDependencies = [
-            gradle                        : "com.android.tools.build:gradle:${versions.androidGradlePluginVersion}",
-            kotlinGradlePlugin            : "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlinVersion}",
-            googleServices                : "com.google.gms:google-services:${versions.googleServicesVersion}",
-            navigationSafeArgsGradlePlugin: "androidx.navigation:navigation-safe-args-gradle-plugin:${versions.navigationVersion}"
+    kotlinDependencies = [
+            coreKtx: "androidx.core:core-ktx:${versions.coreVersion}",
     ]
 
     uiDependencies = [
             appcompat       : "androidx.appcompat:appcompat:${versions.appCompatVersion}",
-            activityKtx     : "androidx.activity:activity-ktx:${versions.activityVersion}",
-            fragmentKtx     : "androidx.fragment:fragment-ktx:${versions.fragmentVersion}",
             material        : "com.google.android.material:material:${versions.materialVersion}",
-            constraintLayout: "androidx.constraintlayout:constraintlayout:${versions.constraintLayoutVersion}",
-    ]
-
-    kotlinDependencies = [
-            kotlinStdlibJdk7: "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlinVersion}",
-            coreKtx         : "androidx.core:core-ktx:${versions.coreVersion}",
-            reflection      : "org.jetbrains.kotlin:kotlin-reflect:${versions.kotlinVersion}"
+            constraintLayout: "androidx.constraintlayout:constraintlayout:${versions.constraintLayoutVersion}"
     ]
 
     koinDependencies = [
-            koinCore   : "io.insert-koin:koin-core:3.2.2",
-            koinAndroid: "io.insert-koin:koin-android:3.3.0",
-            koinTest   : "io.insert-koin:koin-test:3.2.2"
+            koinCore   : "io.insert-koin:koin-core:${versions.koinVersion}",
+            koinAndroid: "io.insert-koin:koin-android:${versions.koinAndroidVersion}",
+            koinTest   : "io.insert-koin:koin-test:${versions.koinVersion}"
     ]
 
-    kotlinxSerializationDependencies{
-        serializationJson: "org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.1"
-    }
+    kotlinxSerializationDependencie = [
+            serializationJson: "org.jetbrains.kotlinx:kotlinx-serialization-json:${versions.serializationVersion}"
+    ]
 
     coroutinesDependencies = [
-            coroutines  :"org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.coroutinesVersion}"
+            coroutines: "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.coroutinesVersion}"
     ]
-    
+
+    architectureComponentsDependencies = [
+            liveData : "androidx.lifecycle:lifecycle-livedata-ktx:${versions.architectureComponentsVersion}",
+            viewModel: "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.architectureComponentsVersion}"
+    ]
+
+    roomDependencies = [
+            room        : "androidx.room:room-ktx:${versions.roomVersion}",
+            roomCompiler: "androidx.room:room-compiler:${versions.roomVersion}"
+    ]
+
 }

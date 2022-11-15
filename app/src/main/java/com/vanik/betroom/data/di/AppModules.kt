@@ -1,6 +1,6 @@
-package com.vanik.betroom.data.modules.di
+package com.vanik.betroom.data.di
 
-import com.vanik.betroom.data.modules.repository.Repository
+import com.vanik.betroom.data.repository.Repository
 import com.vanik.betroom.domain.usecase.AddActorUseCase
 import com.vanik.betroom.domain.usecase.AddMovieUseCase
 import com.vanik.betroom.domain.usecase.GetActorUseCase

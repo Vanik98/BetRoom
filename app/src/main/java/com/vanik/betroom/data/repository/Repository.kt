@@ -1,4 +1,4 @@
-package com.vanik.betroom.data.modules.repository
+package com.vanik.betroom.data.repository
 
 import android.annotation.SuppressLint
 import android.content.ContentValues
