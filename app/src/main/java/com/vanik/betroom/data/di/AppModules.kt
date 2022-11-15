@@ -1,9 +1,6 @@
-package com.vanik.betroom.data.modules.di
+package com.vanik.betroom.data.di
 
-import androidx.room.Room
-import com.vanik.betroom.data.modules.repository.Repository
-import com.vanik.betroom.data.modules.room.AppDatabase
-import com.vanik.betroom.data.modules.sqllite.DBHelper
+import com.vanik.betroom.data.repository.Repository
 import com.vanik.betroom.domain.usecase.AddActorUseCase
 import com.vanik.betroom.domain.usecase.AddMovieUseCase
 import com.vanik.betroom.domain.usecase.GetActorUseCase
@@ -19,8 +16,6 @@ val appModules by lazy {
         movieUseCaseModule,
         actorUseCaseModule,
         repositoryModule,
-        roomModule,
-        sqlLiteModule
     )
 }
 
@@ -40,14 +35,5 @@ private val movieUseCaseModule = module {
 }
 
 private val repositoryModule = module { single { Repository(get(), get(), get()) } }
-
-private val roomModule = module {
-    single { Room.databaseBuilder(get(), AppDatabase::class.java, "database_room").build() }
-    single { get<AppDatabase>().ActorDao() }
-    single { get<AppDatabase>().MovieDao() }
-}
-
-private val sqlLiteModule = module { single { DBHelper(get()) } }
-
 
 

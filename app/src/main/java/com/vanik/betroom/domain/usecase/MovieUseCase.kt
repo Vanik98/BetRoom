@@ -1,8 +1,8 @@
 package com.vanik.betroom.domain.usecase
 
-import com.vanik.betroom.data.modules.repository.Repository
-import com.vanik.betroom.data.model.Actor
-import com.vanik.betroom.data.model.Movie
+import com.vanik.betroom.data.repository.Repository
+import com.vanik.growdb.model.Actor
+import com.vanik.growdb.model.Movie
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext

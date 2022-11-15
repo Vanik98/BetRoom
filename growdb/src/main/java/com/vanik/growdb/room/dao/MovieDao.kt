@@ -1,10 +1,10 @@
-package com.vanik.betroom.data.modules.room.dao
+package com.vanik.growdb.room.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.vanik.betroom.data.model.Movie
+import com.vanik.growdb.model.Movie
 
 @Dao
 interface MovieDao {

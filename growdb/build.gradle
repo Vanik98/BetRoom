@@ -1,21 +1,19 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'org.jetbrains.kotlin.plugin.serialization' version '1.7.20'
 }
 
 android {
-    namespace 'com.vanik.betroom'
-    compileSdk versionOfCompileSdk
+    namespace 'com.vanik.growdb'
+    compileSdk 32
 
     defaultConfig {
-        applicationId "com.vanik.betroom"
-        minSdk versionOfMinSdk
-        targetSdk versionOfTargetSdk
-        versionCode versionOfCode
-        versionName versionOfName
+        minSdk 21
+        targetSdk 32
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
@@ -31,18 +29,16 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    buildFeatures {
-        dataBinding = true
-    }
 }
+
+apply plugin: 'kotlin-kapt'
 
 dependencies {
     implementation kotlinDependencies.values()
     implementation uiDependencies.values()
     //
-    implementation coroutinesDependencies.values()
-    implementation architectureComponentsDependencies.values()
-    //growDb module
-    implementation project(path:':growdb')
+    implementation roomDependencies.get("room")
+    kapt roomDependencies.get("roomCompiler")
+    api koinDependencies.values()
+    api kotlinxSerializationDependencie.values()
 }
-

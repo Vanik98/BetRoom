@@ -1,7 +1,7 @@
-package com.vanik.betroom.data.modules.room.dao
+package com.vanik.growdb.room.dao
 
 import androidx.room.*
-import com.vanik.betroom.data.model.Actor
+import com.vanik.growdb.model.Actor
 
 @Dao
 interface ActorDao {
