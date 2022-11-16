@@ -7,25 +7,22 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 
-private val backgroundThread = Dispatchers.IO
-
 class GetMovieUseCase(private val repository: Repository) {
-    fun executeInRoom() = repository.getMoviesFromRoom().flowOn(backgroundThread)
+    fun executeInRoom() = repository.getMoviesFromRoom()
 
-    fun executeInSqlLite() = repository.getMoviesFromSqlLIte().flowOn(backgroundThread)
+    fun executeInSqlLite() = repository.getMoviesFromSqlLIte()
 }
 
 class AddMovieUseCase(private val repository: Repository) {
-    suspend fun executeInRoom(actor: Actor, movie: Movie) = withContext(backgroundThread) {
+    suspend fun executeInRoom(actor: Actor, movie: Movie) {
         try {
             repository.insertMovieInRoomDb(actor, movie)
         } catch (e: java.lang.Exception) {
 
         }
-
     }
 
-    suspend fun executeInSqlLite(actor: Actor, movie: Movie) = withContext(backgroundThread) {
+    suspend fun executeInSqlLite(actor: Actor, movie: Movie)  {
         try {
             repository.insertMovieInSqlLiteDb(actor, movie)
         } catch (e: java.lang.Exception) {

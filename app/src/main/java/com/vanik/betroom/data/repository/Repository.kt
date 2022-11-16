@@ -9,29 +9,34 @@ import com.vanik.growdb.model.Pet
 import com.vanik.growdb.room.dao.ActorDao
 import com.vanik.growdb.room.dao.MovieDao
 import com.vanik.growdb.sqllite.DBHelper
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 class Repository(
+    private val ioDispatcher: CoroutineDispatcher,
     private val actorDao: ActorDao,
     private val movieDao: MovieDao,
     private val dbLite: DBHelper
 ) {
-    suspend fun insertActorInRoomDb(actor: Actor) {
+    suspend fun insertActorInRoomDb(actor: Actor) = withContext(ioDispatcher) {
         actorDao.insert(actor)
     }
 
-    suspend fun insertMovieInRoomDb(actor: Actor, movie: Movie) {
+    suspend fun insertMovieInRoomDb(actor: Actor, movie: Movie) = withContext(ioDispatcher) {
         movieDao.insert(movie)
         actorDao.update(actor)
     }
 
-    fun getAllActorsFromRoom() = flow { emit(actorDao.getAllActors()) }
-    fun getMoviesFromRoom() = flow { emit(movieDao.getAllMovies()) }
+    fun getAllActorsFromRoom() = flow { emit(actorDao.getAllActors()) }.flowOn(ioDispatcher)
+    fun getMoviesFromRoom() = flow { emit(movieDao.getAllMovies()) }.flowOn(ioDispatcher)
 
-    suspend fun insertActorInSqlLiteDb(actor: Actor) {
+    suspend fun insertActorInSqlLiteDb(actor: Actor) = withContext(ioDispatcher) {
         val cv = ContentValues()
         cv.put("name", actor.name)
         cv.put("surname", actor.surname)
@@ -41,7 +46,7 @@ class Repository(
         dbLite.writableDatabase.insert("actor", null, cv)
     }
 
-    suspend fun insertMovieInSqlLiteDb(actor: Actor, movie: Movie) {
+    suspend fun insertMovieInSqlLiteDb(actor: Actor, movie: Movie) = withContext(ioDispatcher) {
         //movie insert
         var cv = ContentValues()
         cv.put("id", movie.id)
@@ -88,7 +93,7 @@ class Repository(
             } while (cursorCourses.moveToNext())
         }
         emit(actors)
-    }
+    }.flowOn(ioDispatcher)
 
     fun getMoviesFromSqlLIte() = flow {
         val cursorCourses: Cursor = dbLite.writableDatabase.rawQuery("SELECT * FROM Movie", null)
@@ -105,5 +110,5 @@ class Repository(
             } while (cursorCourses.moveToNext())
         }
         emit(movies)
-    }
+    }.flowOn(ioDispatcher)
 }

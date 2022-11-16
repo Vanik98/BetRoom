@@ -7,6 +7,7 @@ import com.vanik.betroom.domain.usecase.GetActorUseCase
 import com.vanik.betroom.domain.usecase.GetMovieUseCase
 import com.vanik.betroom.ui.main.MainViewModel
 import com.vanik.betroom.ui.movie.MovieViewModel
+import kotlinx.coroutines.Dispatchers
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -34,6 +35,6 @@ private val movieUseCaseModule = module {
     single { GetMovieUseCase(get()) }
 }
 
-private val repositoryModule = module { single { Repository(get(), get(), get()) } }
+private val repositoryModule = module { single { Repository(Dispatchers.IO,get(),get(), get()) } }
 
 
